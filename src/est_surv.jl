@@ -4,7 +4,7 @@
 Description
 ============
 
-Estimates the Survival Function. Accepts tidy survival data and outputs a data frame of survival function estimates. It uses `time`, `is_censored`, and `methood`.
+Estimates the Survival Function. Accepts survival data and outputs a data frame of survival function estimates. It uses `time`, `is_censored`, and `methood`.
 
 Usage
 ======
@@ -53,8 +53,30 @@ function est_surv(
 	is_censored
 		  )
 
-	SurvivalData = DataFrame(time = times,is_censored = is_censored);
-	SurvivalData = sort!(SurvivalData, cols = [:time]); 
-	SurvivalData[:ncensor] = cumsum(SurvivalData[:is_censored]);
-	SurvivalData 
+	t = sort!(unique(times));
+	nevent = [count(j ->(j == i ),times) for i in t]
+	nrisk = vcat(length(times),(length(times)) - cumsum(nevent));
+	nrisk = nrisk[1:length(nrisk)-1];
+
+	# Kaplan-Meier estimator is the cumulative product of (nrisk - ndeaths)/ndeaths
+	nd = 1-(nevent./nrisk);
+	km = cumprod(nd)
+	
+
+	ncensor = zeros(length(t));
+	stderror = zeros(length(t));
+	lower_conf = zeros(length(t));
+	upper_conf = zeros(length(t));
+
+	survivalOutput = DataFrame(
+							time = t, 
+							nrisk = nrisk, 
+							nevent = nevent,
+							ncensor = ncensor, 
+							estimate = km, 
+							stderror = stderror,
+							lower_conf = lower_conf,
+							upper_conf = upper_conf);
+	#survivalOutput
+
 end
