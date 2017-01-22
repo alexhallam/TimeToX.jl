@@ -1,5 +1,5 @@
 """
-`est_survf()`
+`est_surv()`
 
 Description
 ============
@@ -9,7 +9,7 @@ Estimates the Survival Function. Accepts tidy survival data and outputs a data f
 Usage
 ======
 
-	est_survf(time = whas[:time], is_censored = whas[:censored])
+	est_surv(time = whas[:time], is_censored = whas[:censored])
 
 Arguments
 =========
@@ -44,11 +44,11 @@ Example
 	whas100 = readtable("datasets/whas100.csv");
 	times = whas100[:lenfol];
 	is_censored = whas100[:fstat];
-	est_survf(times, is_censored);
+	est_surv(times, is_censored);
 
 """
 
-function est_survf(
+function est_surv(
 	times,
 	is_censored
 		  )

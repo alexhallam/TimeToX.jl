@@ -1,6 +1,6 @@
 # include("runtests.jl")
 using Base.Test, DataFrames
-include("../src/est_survf.jl")
+include("../src/est_surv.jl")
 
 # using whas100 dataset
 whas100 = readtable("../datasets/whas100.csv")
@@ -10,10 +10,10 @@ is_censored = whas100[:fstat]
 # Is data read in correctly for tests
 @test typeof(whas100) == DataFrames.DataFrame
 
-# est_survf tests
-esf = est_survf(times,is_censored)
+# Is est_surv working
+esf = est_surv(times,is_censored)
 
-@testset "est_survf" begin
+@testset "est_surv" begin
 	
 	# Is data output as DataFrame
 	@test typeof(esf) == DataFrames.DataFrame 
