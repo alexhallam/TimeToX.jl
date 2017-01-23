@@ -5,7 +5,7 @@ The purpose of this package is to take tidy data as an input and return calculat
 Installation
 ---
 
-```
+```julia
 Pkg.add("TimeToX")
 ```
 
