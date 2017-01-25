@@ -22,15 +22,15 @@ Arguments
 
 Returns
 ========
-- **`time`**: sorted times
+- **`time`**: Sorted timepoints 
 
-- **`nrisk`**: Number at risk at 
+- **`nrisk`**: Number at risk at the given time 
 
-- **`nevent`**: Number of events
+- **`nevent`**: The cumulative number of events that have occurred since the last time listed
 
-- **`ncensor`**: Number censored values 
+- **`ncensor`**: Number censored values. The cumulative number of subjects that have left without an event since the last time listed.  
 
-- **`estimate`**: The estimate of the survival function. The probability of survival at that time point 
+- **`estimate`**: The estimate of the survival function at a given time. The probability of survival at that time point 
 
 - **`stderror`**: The standard error of the estimate
 
@@ -54,7 +54,7 @@ function est_surv(
 		  )
 
 	t = sort!(unique(times));
-	nevent = [count(j ->(j == i ),times) for i in t]
+	nevent = [count(j ->(j .>= i ),times) for i in t]
 	nrisk = vcat(length(times),(length(times)) - cumsum(nevent));
 	nrisk = nrisk[1:length(nrisk)-1];
 

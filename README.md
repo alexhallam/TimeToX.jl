@@ -6,7 +6,7 @@ Installation
 ---
 
 ```julia
-Pkg.add("TimeToX")
+Pkg.clone("https://github.com/alexhallam/TimeToX.jl")
 ```
 
 Will install the package in dependencies.
