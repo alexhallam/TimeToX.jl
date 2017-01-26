@@ -68,15 +68,13 @@ function est_surv(
 	# Kaplan-Meier estimator is the cumulative product of (nrisk - ndeaths)/ndeaths
 	nd = 1-(nevent./nrisk);
 	km = cumprod(nd)
-	stderror = zeros(length(t));
-	lower_conf = zeros(length(t));
-	upper_conf = zeros(length(t));
 
-    surv_func = cumprod(nd)
     greenwood_estimate = [nrisk[i]!=nevent[i]?nevent[i]/(nrisk[i]*(nrisk[i]-nevent[i])):0 for i = 1:length(nrisk)]
     std_prod = cumsum(greenwood_estimate)
-    var = (surv_func.^2).*std_prod
+    var = (km.^2).*std_prod
     stderror = sqrt(var)
+	lower_conf = km-stderror
+	upper_conf = km+stderror
 
 	survivalOutput = DataFrame(
 		time = t, 
