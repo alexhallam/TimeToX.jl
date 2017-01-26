@@ -54,29 +54,28 @@ function est_surv(
 		  )
 
 	t = sort!(unique(times));
-	nevent = [count(j ->(j .>= i ),times) for i in t]
-	nrisk = vcat(length(times),(length(times)) - cumsum(nevent));
-	nrisk = nrisk[1:length(nrisk)-1];
-
+	nevent = [count(j ->(j .== i ),times) for i in t]
+	nrisk = zeros(length(t));
 	# Kaplan-Meier estimator is the cumulative product of (nrisk - ndeaths)/ndeaths
 	nd = 1-(nevent./nrisk);
 	km = cumprod(nd)
 	
-
 	ncensor = zeros(length(t));
+	#nevent = zeros(length(t));
+	nevent = [count(i->(i>=j),times) for j in t]
 	stderror = zeros(length(t));
 	lower_conf = zeros(length(t));
 	upper_conf = zeros(length(t));
 
 	survivalOutput = DataFrame(
-							time = t, 
-							nrisk = nrisk, 
-							nevent = nevent,
-							ncensor = ncensor, 
-							estimate = km, 
-							stderror = stderror,
-							lower_conf = lower_conf,
-							upper_conf = upper_conf);
+		time = t, 
+		nrisk = nrisk, 
+		nevent = nevent,
+		ncensor = ncensor, 
+		estimate = km, 
+		stderror = stderror,
+		lower_conf = lower_conf,
+		upper_conf = upper_conf);
 	#survivalOutput
 
 end
