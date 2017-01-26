@@ -53,9 +53,16 @@ function est_surv(
 	is_censored
 		  )
 
+	# sort unique times
 	t = sort!(unique(times));
+
+	# sum the number of times an event happens. if the event was censored it does not count as an event.
 	nevent = [sum(is_censored[findin(times, i)]) for i in t]
+
+	# as events happen the number at risk decreases. as j iterates through t all i gerater than j is counted.
 	nrisk = [count(i->(i>=j),times) for j in t]
+
+	# for each unique time count the censored events 
 	ncensor = [count(i->(i==0), is_censored[findin(times, j)]) for j in t]
 	
 	# Kaplan-Meier estimator is the cumulative product of (nrisk - ndeaths)/ndeaths
