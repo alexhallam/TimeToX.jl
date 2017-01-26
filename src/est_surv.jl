@@ -65,6 +65,12 @@ function est_surv(
 	lower_conf = zeros(length(t));
 	upper_conf = zeros(length(t));
 
+    surv_func = cumprod(nd)
+    greenwood_estimate = [nrisk[i]!=nevent[i]?nevent[i]/(nrisk[i]*(nrisk[i]-nevent[i])):0 for i = 1:length(nrisk)]
+    std_prod = cumsum(greenwood_estimate)
+    var = (surv_func.^2).*std_prod
+    stderror = sqrt(var)
+
 	survivalOutput = DataFrame(
 		time = t, 
 		nrisk = nrisk, 
