@@ -24,5 +24,3 @@ To estimate the survival function use the general form `est_surv(times, is_censo
 
 Examples
 ---
-
-
