@@ -25,4 +25,8 @@ To estimate the survival function use the general form `est_surv(times, is_censo
 Examples
 ---
 
-![](https://github.com/alexhallam/TimeToX.jl/blob/master/readme_assets/est_surv.gif)
+Standared Kaplan-Meier estimates:
+
+```julia
+est_surv(times, is_censored, method = "km")
+```
