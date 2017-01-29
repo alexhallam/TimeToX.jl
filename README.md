@@ -1,6 +1,6 @@
 A package for survival anlysis, reliability, and other time-to-event modeling. 
 
-The purpose of this package is to take tidy data as an input and return calculations as a fit and as tidy data. No ploting is done in this package. Outstanding plotting packages are already available in julia such as Plot.jl and Gadfly.jl. Tutorials will be made available on how to plot time-to-event.
+No ploting is done in this package. Outstanding plotting packages are already available in julia such as Plot.jl and Gadfly.jl. Tutorials will be made available on how to plot time-to-event.
 
 Installation
 ---
@@ -8,8 +8,6 @@ Installation
 ```julia
 Pkg.clone("https://github.com/alexhallam/TimeToX.jl")
 ```
-
-Will install the package in dependencies.
 
 Estimating The Surival Function
 ---

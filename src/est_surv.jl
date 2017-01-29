@@ -50,7 +50,8 @@ Example
 
 function est_surv(
 	times,
-	is_censored
+	is_censored;
+	method::AbstractString = "km"
 		  )
 
 	# sort unique times
@@ -65,17 +66,22 @@ function est_surv(
 	# for each unique time count the censored events 
 	ncensor = [count(i->(i==0), is_censored[findin(times, j)]) for j in t]
 	
-	# Kaplan-Meier estimator is the cumulative product of (nrisk - ndeaths)/ndeaths
-	nd = 1-(nevent./nrisk);
-	km = cumprod(nd)
+	# calculate the complement of the events over risk aka conditional probability of survival
+	event_proportion = 1-(nevent./nrisk);
 
-    greenwood_estimate = [nrisk[i]!=nevent[i]?nevent[i]/(nrisk[i]*(nrisk[i]-nevent[i])):0 for i = 1:length(nrisk)]
-    std_prod = cumsum(greenwood_estimate)
-    var = (km.^2).*std_prod
-    stderror = sqrt(var)
-	lower_conf = km-stderror
-	upper_conf = km+stderror
+	# Kaplan-Meier estimator is the cumulative product of complement of the events over risk
+	if method == "km"
 
+		km = cumprod(event_proportion) 
+		greenwood_estimate = [nrisk[i]!=nevent[i]?nevent[i]/(nrisk[i]*(nrisk[i]-nevent[i])):0 for i = 1:length(nrisk)]
+		std_prod = cumsum(greenwood_estimate)
+		var_greenwood = (km.^2).*std_prod
+		stderror = sqrt(var_greenwood)
+		lower_conf = km-stderror
+		upper_conf = km+stderror
+
+	end
+	
 	survivalOutput = DataFrame(
 		time = t, 
 		nrisk = nrisk, 
