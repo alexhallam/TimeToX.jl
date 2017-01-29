@@ -12,16 +12,16 @@ What this does
 *Event Functions as Verbs**: Describes time-to-event functions as verbs to make it clear what
  is being done to your event data.
 
-*Outputs ![Tidy Data](http://vita.had.co.nz/papers/tidy-data.pdf)*: Ouputs calculations as tidy data.
+*Outputs [Tidy Data](http://vita.had.co.nz/papers/tidy-data.pdf)*: Ouputs calculations as tidy data.
 Tidy data is language agnostic and an efficient way to work with data.
 
 *Act as Part of the Julia Statistics Eco System*: This package is not ambitious. It is not 
 trying to do everything. It simply takes event data in returns values that are specific to
 time-to-event analysis. As a result plotting is not part of this package, as
-![Gadfly](http://gadflyjl.org/stable/) and ![Plots.jl](https://github.com/JuliaPlots/Plots.jl)
+[Gadfly](http://gadflyjl.org/stable/) and [Plots.jl](https://github.com/JuliaPlots/Plots.jl)
 are good plotting libraries. Also, the survival function can be estimated with many methods, 
 Some of those methods are parametric. It should be possible to use the 
-![Distributions.jl](https://github.com/JuliaPlots/Plots.jl) package to do this kind of analysis.
+[Distributions.jl](https://github.com/JuliaPlots/Plots.jl) package to do this kind of analysis.
 
 
 What this does not do
