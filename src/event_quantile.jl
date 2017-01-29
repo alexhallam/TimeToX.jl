@@ -1,16 +1,18 @@
 """
-`describe_time_to_x()`
+
+`describe_surv`
 
 Description
 ============
 
-Provides discritive statistics on the time-to-event function. 
+Provides quantile discritive statistics on the time-to-event function. 
 This function is used when a dataframe of values has alread been collected with **est_surv()**. 
+quantiles also need to be supplied.
 
 Usage
 ======
 
-	describe_time_to_x
+	describe_surv(dataframe, prob = [.5])
 
 Arguments
 =========
@@ -26,7 +28,21 @@ percentiles.
 Returns
 ========
 
-- **`quantile`**:   
+The values returned are a data frame of the following values.
+
+- **`nth_quantile`** : 25th, 50th, 75th quantile. 
+
+- **`quantile_estimate`**: The calculated quantile. Since the function
+used to calculate quantiles is a step function some technical details 
+make this function slightly different from the `quantile` function
+in Base Julia.
+
+- **`quantile_upper_conf`**: The upper 95% confidence interval 
+
+- **`quantile_lower_conf`**: The lower 95% confidence interval  
+
+Details on quantiles of the time-to-event step function
+--------------------------------------------------------
 
 The kth quantile for a survival curve S(t) is the location at which
 a horizontal line at height percentile = 1-k intersects the plot of S(t),
@@ -65,7 +81,12 @@ considered to be an exact match.
 Example
 ========
 
-	event_quantile()
+	using DataFrames
+	whas100 = readtable("datasets/whas100.csv");
+	times = whas100[:lenfol];
+	is_censored = whas100[:fstat];
+	whas_surv = est_surv(times, is_censored);
+	describe_surv(whas_surv)
 
 
 TODO

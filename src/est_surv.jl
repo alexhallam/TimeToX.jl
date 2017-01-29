@@ -40,6 +40,7 @@ Returns
 
 Example
 ========
+
 	using DataFrames
 	whas100 = readtable("datasets/whas100.csv");
 	times = whas100[:lenfol];
