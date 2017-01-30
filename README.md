@@ -73,7 +73,7 @@ Comparing Survival Functions
 Examples
 ---
 
-Standared Kaplan-Meier estimates:
+Standard Kaplan-Meier estimates:
 
 ```julia
 est_surv(times, is_censored, method = "km")
