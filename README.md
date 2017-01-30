@@ -1,4 +1,4 @@
-Time-To-X
+TimeToX
 ===========
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/concept.svg)](http://www.repostatus.org/#concept)
@@ -49,6 +49,18 @@ Installation
 ```julia
 Pkg.clone("https://github.com/alexhallam/TimeToX.jl")
 ```
+
+Getting Started
+----------------
+
+This package has the following actions. 
+
+* Estimates the survival function `est_surv`
+
+* Describes the survival function `describe_surv`
+
+* Compares two or more survival functions `compare_surv`
+
 
 Estimating The Event (Surival) Function
 ---
