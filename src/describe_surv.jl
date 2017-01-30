@@ -124,7 +124,3 @@ function event_quantile(probs = [.25 , .5, .75])
 							 )
 end
 
-
-
-
-
