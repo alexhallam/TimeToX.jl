@@ -45,8 +45,8 @@ include("../src/est_surv.jl")
 		@test last(esf[:ncensor]) == 1
 		@test isapprox(last(esf[:estimate]), .18, rtol = .1)
 		@test isapprox(last(esf[:stderror]), .746, rtol = .1)
-		@test isapprox(first(esf[:upper_conf]), .778, rtol = .1)
-		@test isapprox(first(esf[:lower_conf]), .042, rtol = .1)
+		@test isapprox(last(esf[:upper_conf]), .778, rtol = .1)
+		@test isapprox(last(esf[:lower_conf]), .042, rtol = .1)
 	end
 
 	@testset "iai" begin
@@ -64,9 +64,9 @@ include("../src/est_surv.jl")
 
 		# Is data output as DataFrame
 		@test typeof(esf) == DataFrames.DataFrame 
-#####
+
 		# Is data the correct size
-		@test size(esf) == (305,5)
+		@test size(esf) == (160,8)
 		
 		# is time sorted
 		@test first(esf[:time]) == 0.0
@@ -88,9 +88,9 @@ include("../src/est_surv.jl")
 		@test last(esf[:nevent]) == 1
 		@test last(esf[:ncensor]) == 0
 		@test isapprox(last(esf[:estimate]), 0.0, rtol = .1)
-		@test isapprox(last(esf[:stderror]), Inf, rtol = .1)
-		@test isapprox(first(esf[:upper_conf]), NaN, rtol = .1)
-		@test isapprox(first(esf[:lower_conf]), NaN, rtol = .1)
+		@test isinf(last(esf[:stderror])) 
+		@test isnan(last(esf[:upper_conf])) 
+		@test isnan(last(esf[:lower_conf])) 
 	end
 end
 # Test KM estimator

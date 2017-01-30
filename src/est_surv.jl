@@ -74,11 +74,12 @@ function est_surv(
 	if method == "km"
 
 		km = cumprod(event_proportion) 
-		greenwood_estimate = [nrisk[i]!=nevent[i]?nevent[i]/(nrisk[i]*(nrisk[i]-nevent[i])):0 for i = 1:length(nrisk)]
+		#greenwood_estimate = [nrisk[i]!=nevent[i]?nevent[i]/(nrisk[i]*(nrisk[i]-nevent[i])):0 for i = 1:length(nrisk)]
+		green_cumsum = cumsum(nevent./(nrisk.*(nrisk-nevent)))
 		#std_prod = cumsum(greenwood_estimate)
-		#var_greenwood = (km.^2).*std_prod
-		#stderror = sqrt(var_greenwood)
-		stderror = zeros(t)
+		var_greenwood = (km.^2).*green_cumsum 
+		stderror = sqrt(var_greenwood)
+		#stderror = zeros(t)
 		lower_conf = km-stderror
 		upper_conf = km+stderror
 
