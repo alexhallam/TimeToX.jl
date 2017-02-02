@@ -7,7 +7,10 @@ TimeToX
 Time-to-event analysis in Julia.
 
 Installation
----
+---------------
+
+[![Package Evaluator v5](http://pkg.julialang.org/badges/TimeToX_0.5.svg)](http://pkg.julialang.org/?pkg=TimeToX&ver=0.5)
+
 
 ```julia
 Pkg.clone("https://github.com/alexhallam/TimeToX.jl")
