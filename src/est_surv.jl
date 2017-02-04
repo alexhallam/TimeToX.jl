@@ -73,15 +73,23 @@ function est_surv(
 	# Kaplan-Meier estimator is the cumulative product of complement of the events over risk
 	if method == "km"
 
+		# Calculate the survival estimate `Kaplan`
 		km = cumprod(event_proportion) 
-		#greenwood_estimate = [nrisk[i]!=nevent[i]?nevent[i]/(nrisk[i]*(nrisk[i]-nevent[i])):0 for i = 1:length(nrisk)]
-		green_cumsum = cumsum(nevent./(nrisk.*(nrisk-nevent)))
-		#std_prod = cumsum(greenwood_estimate)
-		var_greenwood = (km.^2).*green_cumsum 
+
+		# Greenwood estimate is ...
+        greenwood_estimate = [nrisk[i]!=nevent[i]?nevent[i]/(nrisk[i]*(nrisk[i]-nevent[i])):0 for i = 1:length(nrisk)];
+
+		# Conversion from Array{Real,1} to Array{AbstractFloat,1} for `cumsum` to work
+		greenwood_estimate = convert(Array{AbstractFloat,1} , greenwood_estimate)
+		std_prod = cumsum(greenwood_estimate)
+		var_greenwood = (km.^2).*std_prod 
 		stderror = sqrt(var_greenwood)
-		#stderror = zeros(t)
-		lower_conf = km-stderror
-		upper_conf = km+stderror
+		critical_value = 1.96
+		lower_conf = km-critical_value*stderror
+		upper_conf = km+critical_value*stderror
+	    # check boundary
+		upper_conf[map(i->(i>1), upper_conf)]=1
+		lower_conf[map(i->(i<0), lower_conf)]=0
 
 	end
 	
@@ -95,6 +103,5 @@ function est_surv(
 		lower_conf = lower_conf,
 		upper_conf = upper_conf,
 	   );
-	#survivalOutput
 
 end

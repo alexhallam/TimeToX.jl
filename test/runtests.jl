@@ -33,20 +33,20 @@ include("../src/est_surv.jl")
 		@test first(esf[:nrisk]) == 100
 		@test first(esf[:nevent]) == 2 
 		@test first(esf[:ncensor]) == 0
-		@test isapprox(first(esf[:estimate]), .98, rtol = .1)
-#		@test isapprox(first(esf[:stderror]), .014, rtol = .1)
-#		@test isapprox(first(esf[:upper_conf]), 1.00, rtol = .1)
-#		@test isapprox(first(esf[:lower_conf]), .952, rtol = .1)
+		@test isapprox(first(esf[:estimate]), .980, rtol = 1e-2)
+		@test isapprox(first(esf[:stderror]), .014, rtol = 1e-2)
+		@test isapprox(first(esf[:upper_conf]), 1.00, rtol = 1e-2)
+		@test isapprox(first(esf[:lower_conf]), .952, rtol = 1e-2)
 
 		# are the values at last time correct
 		@test last(esf[:time]) == 2719 
 		@test last(esf[:nrisk]) == 1
 		@test last(esf[:nevent]) == 0
 		@test last(esf[:ncensor]) == 1
-		@test isapprox(last(esf[:estimate]), .18, rtol = .1)
-#		@test isapprox(last(esf[:stderror]), .746, rtol = .1)
-#		@test isapprox(last(esf[:upper_conf]), .778, rtol = .1)
-#		@test isapprox(last(esf[:lower_conf]), .042, rtol = .1)
+		@test isapprox(last(esf[:estimate]), .18, rtol = .01)
+		@test isapprox(last(esf[:stderror]), .746, rtol = .01)
+		@test isapprox(last(esf[:upper_conf]), .778, rtol = .01)
+		@test isapprox(last(esf[:lower_conf]), .042, rtol = .01)
 	end
 
 	@testset "iai" begin
@@ -93,5 +93,3 @@ include("../src/est_surv.jl")
 #		@test isnan(last(esf[:lower_conf])) 
 	end
 end
-# Test KM estimator
-#

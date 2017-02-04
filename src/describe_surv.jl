@@ -99,28 +99,32 @@ use the median of the flat line.
 - Add tolerance argument to event_quantile function
 """
 
-function event_quantile(probs = [.25 , .5, .75])
+function event_quantile(estimate, time, probs = [.25, .5, .75])
 	# Check that values are valid probabilities (between 0 and 1) and not NA
 	# throw error is probs are not valid
 
 	# add variables for length of probability vector and the nth quantile
-	nprobs = length(probs);
-	pname = probs*100;
+#	nprobs = length(probs);
+	pname = trunc(Int, probs*100);
 
 	# If prob = 0 report start time else 0
 	# Todo
 	
-	nth_percentile = pname;
-	quantile_estimate = zeros(nprobs);
-	quantile_lower_conf = zeros(nprobs);
-	quantile_upper_conf  = zeros(nprobs);
+#	nth_percentile = pname;
+
+	# get first value that is equal to or less than each probability
+	quantile_estimate = [estimate[findfirst(value -> value <= i, estimate)] for i in probs]
+
+#	quantile_lower_conf = zeros(nprobs);
+#	quantile_upper_conf  = zeros(nprobs);
 
 	# Output is a data frame
 	quantileOutput = DataFrame(
-		nth_percentile = nth_percentile,
+		nth_percentile = pname,
 		quantile_estimate = quantile_estimate,
-		quantile_lower_conf = quantile_lower_conf,  
-		quantile_upper_conf = quantile_upper_conf,  
+#		quantile_lower_conf = quantile_lower_conf,  
+#		quantile_upper_conf = quantile_upper_conf,  
 							 )
+
 end
 
