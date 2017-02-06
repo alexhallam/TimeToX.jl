@@ -12,12 +12,12 @@ quantiles also need to be supplied.
 Usage
 ======
 
-	describe_surv(dataframe, prob = [.5])
+	describe_surv(dataframe; prob = [.5])
 
 Arguments
 =========
 
-- **`x`** : The data frame returned from est_surv
+- **`dataframe`** : The data frame returned from est_surv
 
 - **`probs`** : Probabilities at which to calculate quantiles.
 The default option is a vector [.25, .5, .75] which calculates the 25th, 50th, and 75th
@@ -99,9 +99,11 @@ use the median of the flat line.
 - Add tolerance argument to event_quantile function
 """
 
-function event_quantile(estimate, time, probs = [.25, .5, .75])
+function event_quantile(dataframe, probs = [.25, .5, .75])
 	# Check that values are valid probabilities (between 0 and 1) and not NA
 	# throw error is probs are not valid
+	estimate = dataframe[:estimate]
+	time = dataframe[:time]
 
 	# add variables for length of probability vector and the nth quantile
 #	nprobs = length(probs);
@@ -113,7 +115,7 @@ function event_quantile(estimate, time, probs = [.25, .5, .75])
 #	nth_percentile = pname;
 
 	# get first value that is equal to or less than each probability
-	quantile_estimate = [estimate[findfirst(value -> value <= i, estimate)] for i in probs]
+	quantile_estimate = [time[findfirst(value -> value <= i, estimate)] for i in probs]
 
 #	quantile_lower_conf = zeros(nprobs);
 #	quantile_upper_conf  = zeros(nprobs);
@@ -121,7 +123,7 @@ function event_quantile(estimate, time, probs = [.25, .5, .75])
 	# Output is a data frame
 	quantileOutput = DataFrame(
 		nth_percentile = pname,
-		quantile_estimate = quantile_estimate,
+		quantile_estimate = quantile_estimate 
 #		quantile_lower_conf = quantile_lower_conf,  
 #		quantile_upper_conf = quantile_upper_conf,  
 							 )

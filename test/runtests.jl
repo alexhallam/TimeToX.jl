@@ -1,11 +1,12 @@
 # include("runtests.jl")
 using Base.Test, DataFrames, DataFramesMeta
 include("../src/est_surv.jl")
+include("../src/describe_surv.jl")
 
 
-@testset "km method" begin
+@testset "functions " begin
 
-	@testset "whas100" begin
+	@testset "km_whas100" begin
 
 		# Test km method with whas100 dataset
 		whas100 = readtable("../datasets/whas100.csv")
@@ -49,7 +50,7 @@ include("../src/est_surv.jl")
 		@test isapprox(last(esf[:lower_conf]), .042, rtol = .01)
 	end
 
-	@testset "iai" begin
+	@testset "km_iai" begin
 
 		# Test km method with iai (Intra-Amniotic Inflammation) dataset
 		ia = readtable("../datasets/iai.txt", separator = '\t')
@@ -91,5 +92,17 @@ include("../src/est_surv.jl")
 #		@test isinf(last(esf[:stderror])) 
 #		@test isnan(last(esf[:upper_conf])) 
 #		@test isnan(last(esf[:lower_conf])) 
+	end
+	
+	@testset "quantiles" begin
+
+		# Set up data
+		whas100 = readtable("../datasets/whas100.csv")
+		times = whas100[:lenfol]
+		is_censored = whas100[:fstat]
+		esf = est_surv(times,is_censored)
+		quantile_df = event_quantile(esf)
+
+		@test quantile_df[:quantile_estimate] == [2710, 2201, 656]
 	end
 end
