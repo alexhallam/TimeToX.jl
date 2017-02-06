@@ -22,15 +22,15 @@ Arguments
 
 Returns
 ========
-- **`time`**: Sorted timepoints 
+- **`time`**: Sorted timepoints
 
-- **`nrisk`**: Number at risk at the given time 
+- **`nrisk`**: Number at risk at the given time
 
 - **`nevent`**: The cumulative number of events that have occurred since the last time listed
 
-- **`ncensor`**: Number censored values. The cumulative number of subjects that have left without an event since the last time listed.  
+- **`ncensor`**: Number censored values. The cumulative number of subjects that have left without an event since the last time listed.
 
-- **`estimate`**: The estimate of the survival function at a given time. The probability of survival at that time point 
+- **`estimate`**: The estimate of the survival function at a given time. The probability of survival at that time point
 
 - **`stderror`**: The standard error of the estimate
 
@@ -64,9 +64,9 @@ function est_surv(
 	# as events happen the number at risk decreases. as j iterates through t all i gerater than j is counted.
 	nrisk = [count(i->(i>=j),times) for j in t]
 
-	# for each unique time count the censored events 
+	# for each unique time count the censored events
 	ncensor = [count(i->(i==0), is_censored[findin(times, j)]) for j in t]
-	
+
 	# calculate the complement of the events over risk aka conditional probability of survival
 	event_proportion = 1-(nevent./nrisk);
 
@@ -74,16 +74,15 @@ function est_surv(
 	if method == "km"
 
 		# Calculate the survival estimate `Kaplan`
-		km = cumprod(event_proportion) 
-
+		km::Array{AbstractFloat,1} = cumprod(event_proportion)
 		# Greenwood estimate is ...
-        greenwood_estimate = [nrisk[i]!=nevent[i]?nevent[i]/(nrisk[i]*(nrisk[i]-nevent[i])):0 for i = 1:length(nrisk)];
-
+    greenwood_estimate::Array{AbstractFloat,1} = [nrisk[i]!=nevent[i]?nevent[i]/(nrisk[i]*(nrisk[i]-nevent[i])):0 for i = 1:length(nrisk)];
 		# Conversion from Array{Real,1} to Array{AbstractFloat,1} for `cumsum` to work
-		greenwood_estimate = convert(Array{AbstractFloat,1} , greenwood_estimate)
-		std_prod = cumsum(greenwood_estimate)
-		var_greenwood = (km.^2).*std_prod 
-		stderror = sqrt(var_greenwood)
+		std_prod::Array{AbstractFloat,1} = cumsum(greenwood_estimate)
+		var_greenwood::Array{AbstractFloat,1} = (km.^2).*std_prod
+		stderror::Array{AbstractFloat,1} = sqrt(var_greenwood)
+
+
 		critical_value = 1.96
 		lower_conf = km-critical_value*stderror
 		upper_conf = km+critical_value*stderror
@@ -92,13 +91,13 @@ function est_surv(
 		lower_conf[map(i->(i<0), lower_conf)]=0
 
 	end
-	
+
 	survivalOutput = DataFrame(
-		time = t, 
-		nrisk = nrisk, 
+		time = t,
+		nrisk = nrisk,
 		nevent = nevent,
-		ncensor = ncensor, 
-		estimate = km, 
+		ncensor = ncensor,
+		estimate = km,
 		stderror = stderror,
 		lower_conf = lower_conf,
 		upper_conf = upper_conf,
