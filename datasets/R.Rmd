@@ -1,0 +1,81 @@
+---
+title: "Check Survival"
+author: "Alex Hallam"
+date: "2/4/2017"
+output: html_document
+---
+```{r}
+#setwd("/Users/alexhallam/Desktop/TimeToX/datasets/")
+whas100 = read.csv("whas100.csv")
+library("tidyverse")
+ia = read.table("iai.txt", header = TRUE)
+times = whas100$lenfol
+is_censored = whas100$fstat
+library("survival")
+whas.surv <- survfit(Surv(times, is_censored)~ 1)
+esf = tidy(whas.surv)
+quantile(whas.surv)
+```
+$$std.error = \sqrt{\hat{K}^2\Sigma_{t_i\leq t}\frac{event_i}{risk_i(risk_i-event_i)}}$$
+```{r}
+times = ia$days
+is_censored = ia$delcensor
+ia.surv <- survfit(Surv(times, is_censored)~ 1)
+esf = tidy(ia.surv)
+head(esf)
+```
+```{r}
+a = sqrt(esf$estimate[1]^2*(1/(305*(304))))
+b = sqrt(esf$estimate[2]^2*(1/(305*(304)))+(2/(304*(302))))
+c = sqrt(esf$estimate[3]^2*(1/(305*(304)))+(2/(304*(302)))+(1/(302*(301))))
+d = sqrt(esf$estimate[4]^2*(1/(305*(304)))+(2/(304*(302)))+(1/(302*(301)))+(1/(301*(300))))
+e = sqrt(esf$estimate[5]^2*(1/(305*(304)))+(2/(304*(302)))+(1/(302*(301)))+(1/(301*(300)))+(1/(300*(299))))
+c(a,b,c,d,e)
+```
+
+
+
+```{r}
+a = esf$estimate[1]^2*(1/(305*(304)))
+b = esf$estimate[2]^2*(1/(305*(304)))+(2/(304*(302)))
+c = esf$estimate[3]^2*(1/(305*(304)))+(2/(304*(302)))+(1/(302*(301)))
+d = esf$estimate[4]^2*(1/(305*(304)))+(2/(304*(302)))+(1/(302*(301)))+(1/(301*(300)))
+e = esf$estimate[5]^2*(1/(305*(304)))+(2/(304*(302)))+(1/(302*(301)))+(1/(301*(300)))+(1/(300*(299)))
+c(a,b,c,d,e)
+```
+
+
+
+
+
+
+
+```{r}
+#greenwood cumsum
+(1/(305*(304)))
+(1/(305*(304)))+(2/(304*(302)))
+(1/(305*(304)))+(2/(304*(302)))+(1/(302*(301)))
+(1/(305*(304)))+(2/(304*(302)))+(1/(302*(301)))+(1/(301*(300)))
+(1/(305*(304)))+(2/(304*(302)))+(1/(302*(301)))+(1/(301*(300)))+(1/(300*(299)))
+```
+```{r}
+1/92720
+```
+
+
+
+
+
+
+
+
+
+
+```{r}
+ggplot()+
+  geom_point(data = esf, aes(x = time, y = std.error, color = "R")) +
+  geom_point(data = julia.esf, aes(x = time, y = stderror, color = "Julia")) +
+  ggtitle("Output")
+```
+
+

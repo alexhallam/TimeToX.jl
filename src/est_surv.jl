@@ -76,31 +76,38 @@ function est_surv(
 		# Calculate the survival estimate `Kaplan`
 		km::Array{AbstractFloat,1} = cumprod(event_proportion)
 		# Greenwood estimate is ...
-    greenwood_estimate::Array{AbstractFloat,1} = [nrisk[i]!=nevent[i]?nevent[i]/(nrisk[i]*(nrisk[i]-nevent[i])):0 for i = 1:length(nrisk)];
-		# Conversion from Array{Real,1} to Array{AbstractFloat,1} for `cumsum` to work
-		std_prod::Array{AbstractFloat,1} = cumsum(greenwood_estimate)
-		var_greenwood::Array{AbstractFloat,1} = (km.^2).*std_prod
-		stderror::Array{AbstractFloat,1} = sqrt(var_greenwood)
+    greenwood::Array{AbstractFloat,1} = [nrisk[i]!=nevent[i]?nevent[i]/(nrisk[i]*(nrisk[i]-nevent[i])):0 for i = 1:length(nrisk)];
+		# the greenwood cumsum matches Rs manual calculations
+		greenwood_cumsums::Array{AbstractFloat,1} = cumsum(greenwood)
+		#### Problem Line
+		#greenwood_var::Array{AbstractFloat,1} = [(km[i]^2)*greenwood_cumsums[i] for i = 1:length(nrisk)]
+		# the cumsums are good and the km is good. watch order of ops
+		greenwood_var = [sqrt(km[i]^2*greenwood_cumsums[i]) for i = 1:length(nrisk)]
 
+		#####
 
-		critical_value = 1.96
-		lower_conf = km-critical_value*stderror
-		upper_conf = km+critical_value*stderror
-	    # check boundary
-		upper_conf[map(i->(i>1), upper_conf)]=1
-		lower_conf[map(i->(i<0), lower_conf)]=0
+#		stderror::Array{AbstractFloat,1} = sqrt(greenwood_var)
+
+#
+#		critical_value = 1.96
+#		lower_conf = km-critical_value*stderror
+#		upper_conf = km+critical_value*stderror
+#	    # check boundary
+#		upper_conf[map(i->(i>1), upper_conf)]=1
+#		lower_conf[map(i->(i<0), lower_conf)]=0
 
 	end
 
-	survivalOutput = DataFrame(
-		time = t,
-		nrisk = nrisk,
-		nevent = nevent,
-		ncensor = ncensor,
-		estimate = km,
-		stderror = stderror,
-		lower_conf = lower_conf,
-		upper_conf = upper_conf,
-	   );
+#	survivalOutput = DataFrame(
+#		time = t,
+#		nrisk = nrisk,
+#		nevent = nevent,
+#		ncensor = ncensor,
+#		estimate = km,
+#		var = greenwood_var,
+#		stderror = stderror,
+#		lower_conf = lower_conf,
+#		upper_conf = upper_conf,
+#	   );
 
 end
