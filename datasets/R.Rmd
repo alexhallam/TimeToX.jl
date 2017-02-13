@@ -7,7 +7,7 @@ output: html_document
 ```{r}
 #setwd("/Users/alexhallam/Desktop/TimeToX/datasets/")
 whas100 = read.csv("whas100.csv")
-library("tidyverse")
+library("broom")
 ia = read.table("iai.txt", header = TRUE)
 times = whas100$lenfol
 is_censored = whas100$fstat
@@ -33,8 +33,6 @@ e = sqrt(esf$estimate[5]^2*(1/(305*(304)))+(2/(304*(302)))+(1/(302*(301)))+(1/(3
 c(a,b,c,d,e)
 ```
 
-
-
 ```{r}
 a = esf$estimate[1]^2*(1/(305*(304)))
 b = esf$estimate[2]^2*(1/(305*(304)))+(2/(304*(302)))
@@ -44,12 +42,6 @@ e = esf$estimate[5]^2*(1/(305*(304)))+(2/(304*(302)))+(1/(302*(301)))+(1/(301*(3
 c(a,b,c,d,e)
 ```
 
-
-
-
-
-
-
 ```{r}
 #greenwood cumsum
 (1/(305*(304)))
@@ -58,9 +50,7 @@ c(a,b,c,d,e)
 (1/(305*(304)))+(2/(304*(302)))+(1/(302*(301)))+(1/(301*(300)))
 (1/(305*(304)))+(2/(304*(302)))+(1/(302*(301)))+(1/(301*(300)))+(1/(300*(299)))
 ```
-```{r}
-1/92720
-```
+
 
 
 
@@ -76,6 +66,13 @@ ggplot()+
   geom_point(data = esf, aes(x = time, y = std.error, color = "R")) +
   geom_point(data = julia.esf, aes(x = time, y = stderror, color = "Julia")) +
   ggtitle("Output")
+```
+
+
+```{r}
+data <- c(-.86,.73,1.29,1.41,1.56,1.86,2.33,2.59,3.37,3.48)
+mean(data)
+sd(data)
 ```
 
 

@@ -4,7 +4,8 @@
 Description
 ============
 
-Estimates the Survival Function. Accepts survival data and outputs a data frame of survival function estimates. It uses `time`, `is_censored`, and `methood`.
+Estimates the Survival Function. Accepts survival data and outputs a data frame
+of survival function estimates. It uses `time`, `is_censored`, and `methood`.
 
 Usage
 ======
@@ -18,7 +19,8 @@ Arguments
 
 - **`is_censored`** : A vector of bools. 1 == censored and 0 == not censored
 
-- **`method`** : Method used to estimate the survival function. Default is KM. Options are `km` for Kapan-Meirer, ...
+- **`method`** : Method used to estimate the survival function. Default is KM.
+Options are `km` for Kapan-Meirer, ...
 
 Returns
 ========
@@ -26,11 +28,14 @@ Returns
 
 - **`nrisk`**: Number at risk at the given time
 
-- **`nevent`**: The cumulative number of events that have occurred since the last time listed
+- **`nevent`**: The cumulative number of events that have occurred since the
+last time listed
 
-- **`ncensor`**: Number censored values. The cumulative number of subjects that have left without an event since the last time listed.
+- **`ncensor`**: Number censored values. The cumulative number of subjects that
+have left without an event since the last time listed.
 
-- **`estimate`**: The estimate of the survival function at a given time. The probability of survival at that time point
+- **`estimate`**: The estimate of the survival function at a given time. The
+probability of survival at that time point
 
 - **`stderror`**: The standard error of the estimate
 
@@ -56,7 +61,7 @@ function est_surv(
 		  )
 
 	# sort unique times
-	t = sort!(unique(times));
+	t = sort(unique(times))
 
 	# sum the number of times an event happens. if the event was censored it does not count as an event.
 	nevent = [sum(is_censored[findin(times, i)]) for i in t]
@@ -68,21 +73,28 @@ function est_surv(
 	ncensor = [count(i->(i==0), is_censored[findin(times, j)]) for j in t]
 
 	# calculate the complement of the events over risk aka conditional probability of survival
-	event_proportion = 1-(nevent./nrisk);
+	event_proportion = 1-(nevent./nrisk)
 
 	# Kaplan-Meier estimator is the cumulative product of complement of the events over risk
 	if method == "km"
 
 		# Calculate the survival estimate `Kaplan`
-		km::Array{AbstractFloat,1} = cumprod(event_proportion)
+		km = cumprod(event_proportion)
 		# Greenwood estimate is ...
-    greenwood::Array{AbstractFloat,1} = [nrisk[i]!=nevent[i]?nevent[i]/(nrisk[i]*(nrisk[i]-nevent[i])):0 for i = 1:length(nrisk)];
-		# the greenwood cumsum matches Rs manual calculations
-		greenwood_cumsums::Array{AbstractFloat,1} = cumsum(greenwood)
+    delta::Array{Float64,1} = [nrisk[i]!=nevent[i]?nevent[i]/(nrisk[i]*(nrisk[i]-nevent[i])):0 for i = 1:length(nrisk)]
+
+		# take cumsum of delta
+	  cumsum_delta = [sum(delta[1:i]) for i = 1:length(nrisk)]
+		cumsum_delta
+
+
 		#### Problem Line
 		#greenwood_var::Array{AbstractFloat,1} = [(km[i]^2)*greenwood_cumsums[i] for i = 1:length(nrisk)]
 		# the cumsums are good and the km is good. watch order of ops
-		greenwood_var = [sqrt(km[i]^2*greenwood_cumsums[i]) for i = 1:length(nrisk)]
+		log_km = log(km)
+		greenwood_var = (1 ./log_km.^2) .*cumsum_delta
+
+		#greenwood_sd = sqrt(greenwood_var)
 
 		#####
 
