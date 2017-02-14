@@ -61,7 +61,7 @@ function est_surv(
 		  )
 
 	# sort unique times
-	t = sort(unique(times))
+	t = sort!(unique(times))
 
 	# sum the number of times an event happens. if the event was censored it does not count as an event.
 	nevent = [sum(is_censored[findin(times, i)]) for i in t]
@@ -87,12 +87,13 @@ function est_surv(
 	  cumsum_delta = [sum(delta[1:i]) for i = 1:length(nrisk)]
 		cumsum_delta
 
-
 		#### Problem Line
 		#greenwood_var::Array{AbstractFloat,1} = [(km[i]^2)*greenwood_cumsums[i] for i = 1:length(nrisk)]
 		# the cumsums are good and the km is good. watch order of ops
 		log_km = log(km)
-		greenwood_var = (1 ./log_km.^2) .*cumsum_delta
+		#est_var = (1 ./log_km.^2) .*cumsum_delta
+		est_var = [(1/log_km[i]^2)*cumsum_delta[i] for i = 1:length(km)]
+		#est_std = sqrt(est_var)
 
 		#greenwood_sd = sqrt(greenwood_var)
 
@@ -110,16 +111,17 @@ function est_surv(
 
 	end
 
-#	survivalOutput = DataFrame(
-#		time = t,
-#		nrisk = nrisk,
-#		nevent = nevent,
-#		ncensor = ncensor,
-#		estimate = km,
-#		var = greenwood_var,
-#		stderror = stderror,
+	survivalOutput = DataFrame(
+		time = t,
+		nrisk = nrisk,
+		nevent = nevent,
+		ncensor = ncensor,
+		estimate = km,
+		var = est_var,
+#		stderror = est_std,
+		cumsum_delta = cumsum_delta
 #		lower_conf = lower_conf,
 #		upper_conf = upper_conf,
-#	   );
+	   );
 
 end
