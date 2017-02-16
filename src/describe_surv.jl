@@ -5,8 +5,8 @@
 Description
 ============
 
-Provides quantile discritive statistics on the time-to-event function. 
-This function is used when a dataframe of values has alread been collected with **est_surv()**. 
+Provides quantile discritive statistics on the time-to-event function.
+This function is used when a dataframe of values has alread been collected with **est_surv()**.
 quantiles also need to be supplied.
 
 Usage
@@ -30,16 +30,16 @@ Returns
 
 The values returned are a data frame of the following values.
 
-- **`nth_quantile`** : 25th, 50th, 75th quantile. 
+- **`nth_quantile`** : 25th, 50th, 75th quantile.
 
 - **`quantile_estimate`**: The calculated quantile. Since the function
-used to calculate quantiles is a step function some technical details 
+used to calculate quantiles is a step function some technical details
 make this function slightly different from the `quantile` function
 in Base Julia.
 
-- **`quantile_upper_conf`**: The upper 95% confidence interval 
+- **`quantile_upper_conf`**: The upper 95% confidence interval
 
-- **`quantile_lower_conf`**: The lower 95% confidence interval  
+- **`quantile_lower_conf`**: The lower 95% confidence interval
 
 Details on quantiles of the time-to-event step function
 --------------------------------------------------------
@@ -52,7 +52,7 @@ Since S(t) is a step function, it is possible for the curve to have a
 horizontal segment at exactly 1-k, in which case the midpoint of the
 horizontal segment is returned.  This mirrors the standard behavior of
 the median when data is uncensored.  If the survival curve does not
-fall to 1-k, then that quantile is undefined. In practice this may be 
+fall to 1-k, then that quantile is undefined. In practice this may be
 seen when, for example, the first 25th percentile or last 75th percentile
 values are all censored.
 
@@ -92,8 +92,8 @@ Example
 TODO
 ====
 
-- Add a function to find quantiles in a CDF curve. Once in a while the 
-survival curve has a flat spot exactly at the requested quantile. Then we 
+- Add a function to find quantiles in a CDF curve. Once in a while the
+survival curve has a flat spot exactly at the requested quantile. Then we
 use the median of the flat line.
 
 - Add tolerance argument to event_quantile function
@@ -111,7 +111,7 @@ function event_quantile(dataframe, probs = [.25, .5, .75])
 
 	# If prob = 0 report start time else 0
 	# Todo
-	
+
 #	nth_percentile = pname;
 
 	# get first value that is equal to or less than each probability
@@ -123,10 +123,9 @@ function event_quantile(dataframe, probs = [.25, .5, .75])
 	# Output is a data frame
 	quantileOutput = DataFrame(
 		nth_percentile = pname,
-		quantile_estimate = quantile_estimate 
-#		quantile_lower_conf = quantile_lower_conf,  
-#		quantile_upper_conf = quantile_upper_conf,  
+		quantile_estimate = quantile_estimate
+#		quantile_lower_conf = quantile_lower_conf,
+#		quantile_upper_conf = quantile_upper_conf,
 							 )
 
 end
-
