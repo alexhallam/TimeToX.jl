@@ -90,9 +90,9 @@ function est_surv(
 		#### Problem Line
 		#greenwood_var::Array{AbstractFloat,1} = [(km[i]^2)*greenwood_cumsums[i] for i = 1:length(nrisk)]
 		# the cumsums are good and the km is good. watch order of ops
-		log_km = log(km)
+		#log_km = log(km)
 		#est_var = (1 ./log_km.^2) .*cumsum_delta
-		est_var = [(1/log_km[i]^2)*cumsum_delta[i] for i = 1:length(km)]
+		#est_var = [(1/log_km[i]^2)*cumsum_delta[i] for i = 1:length(km)]
 		#est_std = sqrt(est_var)
 
 		#greenwood_sd = sqrt(greenwood_var)
@@ -117,9 +117,9 @@ function est_surv(
 		nevent = nevent,
 		ncensor = ncensor,
 		estimate = km,
-		var = est_var,
+#		var = est_var,
 #		stderror = est_std,
-		cumsum_delta = cumsum_delta
+#		cumsum_delta = cumsum_delta
 #		lower_conf = lower_conf,
 #		upper_conf = upper_conf,
 	   );
