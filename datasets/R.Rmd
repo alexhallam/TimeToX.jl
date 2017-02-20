@@ -20,9 +20,9 @@ $$std.error = \sqrt{\hat{K}^2\Sigma_{t_i\leq t}\frac{event_i}{risk_i(risk_i-even
 ```{r}
 times = ia$days
 is_censored = ia$delcensor
-ia.surv <- survfit(Surv(times, is_censored)~ 1)
+ia.surv <- survfit(Surv(times, is_censored)~ 1,conf.type="log-log")
 esf = tidy(ia.surv)
-head(esf)
+esf
 ```
 ```{r}
 a = sqrt(esf$estimate[1]^2*(1/(305*(304))))
@@ -51,28 +51,11 @@ c(a,b,c,d,e)
 (1/(305*(304)))+(2/(304*(302)))+(1/(302*(301)))+(1/(301*(300)))+(1/(300*(299)))
 ```
 
-
-
-
-
-
-
-
-
-
-
 ```{r}
-ggplot()+
-  geom_point(data = esf, aes(x = time, y = std.error, color = "R")) +
-  geom_point(data = julia.esf, aes(x = time, y = stderror, color = "Julia")) +
-  ggtitle("Output")
+tt <- c(7,6,6,5,2,4)
+cens <- c(0,1,0,0,1,1)
+results <- survfit(Surv(tt,cens) ~ 1, conf.type = "log-log")
+summary(results)
+tidy(results)
 ```
-
-
-```{r}
-data <- c(-.86,.73,1.29,1.41,1.56,1.86,2.33,2.59,3.37,3.48)
-mean(data)
-sd(data)
-```
-
 
