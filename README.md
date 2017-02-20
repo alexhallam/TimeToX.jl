@@ -88,7 +88,7 @@ julia> fit = est_surv(times, is_censored, method = "km")
 
 julia> Pkg.add("Gadfly")
 julia> using Gadfly
-# Blow I divide time by 7 to show weeks instead of days
+# Below I divide time by 7 to show weeks instead of days
 julia> plot(y=fit[:estimate], x=fit[:time]/7, Geom.step)
 ```
 ![image](km_img.png)
