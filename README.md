@@ -52,34 +52,40 @@ julia> whas100 = readtable("../datasets/whas100.csv")
 julia> times = whas100[:lenfol]
 julia> is_censored = whas100[:fstat]
 julia> fit = est_surv(times, is_censored, method = "km")
-95×5 DataFrames.DataFrame
-│ Row │ time │ nrisk │ nevent │ ncensor │ estimate │
-├─────┼──────┼───────┼────────┼─────────┼──────────┤
-│ 1   │ 6    │ 100   │ 2      │ 0       │ 0.98     │
-│ 2   │ 14   │ 98    │ 1      │ 0       │ 0.97     │
-│ 3   │ 44   │ 97    │ 1      │ 0       │ 0.96     │
-│ 4   │ 62   │ 96    │ 1      │ 0       │ 0.95     │
-│ 5   │ 89   │ 95    │ 1      │ 0       │ 0.94     │
-│ 6   │ 98   │ 94    │ 1      │ 0       │ 0.93     │
-│ 7   │ 104  │ 93    │ 1      │ 0       │ 0.92     │
-│ 8   │ 107  │ 92    │ 1      │ 0       │ 0.91     │
+95×7 DataFrames.DataFrame
+│ Row │ time │ nrisk │ nevent │ ncensor │ estimate │ low       │ high     │
+├─────┼──────┼───────┼────────┼─────────┼──────────┼───────────┼──────────┤
+│ 1   │ 6    │ 100   │ 2      │ 0       │ 0.98     │ 0.922394  │ 0.99496  │
+│ 2   │ 14   │ 98    │ 1      │ 0       │ 0.97     │ 0.909876  │ 0.990225 │
+│ 3   │ 44   │ 97    │ 1      │ 0       │ 0.96     │ 0.896931  │ 0.984797 │
+│ 4   │ 62   │ 96    │ 1      │ 0       │ 0.95     │ 0.884045  │ 0.978879 │
+│ 5   │ 89   │ 95    │ 1      │ 0       │ 0.94     │ 0.871319  │ 0.972588 │
+│ 6   │ 98   │ 94    │ 1      │ 0       │ 0.93     │ 0.858772  │ 0.966001 │
+│ 7   │ 104  │ 93    │ 1      │ 0       │ 0.92     │ 0.846397  │ 0.959167 │
+│ 8   │ 107  │ 92    │ 1      │ 0       │ 0.91     │ 0.834183  │ 0.952125 │
 ⋮
-│ 87  │ 2595 │ 9     │ 0      │ 1       │ 0.432674 │
-│ 88  │ 2610 │ 8     │ 0      │ 1       │ 0.432674 │
-│ 89  │ 2613 │ 7     │ 0      │ 1       │ 0.432674 │
-│ 90  │ 2624 │ 6     │ 1      │ 0       │ 0.360561 │
-│ 91  │ 2631 │ 5     │ 0      │ 1       │ 0.360561 │
-│ 92  │ 2638 │ 4     │ 0      │ 1       │ 0.360561 │
-│ 93  │ 2641 │ 3     │ 0      │ 1       │ 0.360561 │
-│ 94  │ 2710 │ 2     │ 1      │ 0       │ 0.180281 │
-│ 95  │ 2719 │ 1     │ 0      │ 1       │ 0.180281 │
+│ 87  │ 2595 │ 9     │ 0      │ 1       │ 0.432674 │ 0.302251  │ 0.556217 │
+│ 88  │ 2610 │ 8     │ 0      │ 1       │ 0.432674 │ 0.302251  │ 0.556217 │
+│ 89  │ 2613 │ 7     │ 0      │ 1       │ 0.432674 │ 0.302251  │ 0.556217 │
+│ 90  │ 2624 │ 6     │ 1      │ 0       │ 0.360561 │ 0.199715  │ 0.524147 │
+│ 91  │ 2631 │ 5     │ 0      │ 1       │ 0.360561 │ 0.199715  │ 0.524147 │
+│ 92  │ 2638 │ 4     │ 0      │ 1       │ 0.360561 │ 0.199715  │ 0.524147 │
+│ 93  │ 2641 │ 3     │ 0      │ 1       │ 0.360561 │ 0.199715  │ 0.524147 │
+│ 94  │ 2710 │ 2     │ 1      │ 0       │ 0.180281 │ 0.0179118 │ 0.482039 │
+│ 95  │ 2719 │ 1     │ 0      │ 1       │ 0.180281 │ 0.0179118 │ 0.482039 │
 
 julia> Pkg.add("Gadfly")
 julia> using Gadfly
 # Below I divide time by 7 to show weeks instead of days
-julia> plot(y=fit[:estimate], x=fit[:time]/7, Geom.step)
+julia> plot(layer(y=fit[:estimate], x=fit[:time]/7, Geom.step),
+layer(y=fit[:low], x=fit[:time]/7, Theme(default_color=color("orange")), Geom.step),
+layer(y=fit[:high], x=fit[:time]/7, Theme(default_color=color("orange")), Geom.step),
+Guide.title("KM Survival Of WHAS100 with log-log CIs"),
+Guide.xlabel("Time (weeks)"),
+Guide.ylabel("Survival"),
+)
 ```
-![image](km_img.png)
+![survival curve](readme_assests/km_img.png)
 
 Describing The Survival Function
 ----------------------------------

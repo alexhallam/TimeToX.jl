@@ -87,27 +87,14 @@ function est_surv(
 	  cumsum_delta = [sum(delta[1:i]) for i = 1:length(nrisk)]
 		cumsum_delta
 
-		#### Problem Line
-		#greenwood_var::Array{AbstractFloat,1} = [(km[i]^2)*greenwood_cumsums[i] for i = 1:length(nrisk)]
-		# the cumsums are good and the km is good. watch order of ops
-		#log_km = log(km)
-		#est_var = (1 ./log_km.^2) .*cumsum_delta
-		#est_var = [(1/log_km[i]^2)*cumsum_delta[i] for i = 1:length(km)]
-		#est_std = sqrt(est_var)
+		# log-log CI
+		log_log_var = [1/(log(km[i])^2)*cumsum_delta[i] for i = 1:length(km)]
+		log_log_sqrt = sqrt(log_log_var)
+		c_low = log(-log(km))-1.96*log_log_sqrt
+		c_high = log(-log(km))+1.96*log_log_sqrt
+		high = exp(-exp(c_low))
+		low = exp(-exp(c_high))
 
-		#greenwood_sd = sqrt(greenwood_var)
-
-		#####
-
-#		stderror::Array{AbstractFloat,1} = sqrt(greenwood_var)
-
-#
-#		critical_value = 1.96
-#		lower_conf = km-critical_value*stderror
-#		upper_conf = km+critical_value*stderror
-#	    # check boundary
-#		upper_conf[map(i->(i>1), upper_conf)]=1
-#		lower_conf[map(i->(i<0), lower_conf)]=0
 
 	end
 
@@ -117,11 +104,8 @@ function est_surv(
 		nevent = nevent,
 		ncensor = ncensor,
 		estimate = km,
-#		var = est_var,
-#		stderror = est_std,
-#		cumsum_delta = cumsum_delta
-#		lower_conf = lower_conf,
-#		upper_conf = upper_conf,
+		low = low,
+		high = high,
 	   );
 
 end
