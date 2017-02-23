@@ -25,7 +25,7 @@ This package has the following actions.
 * Compares two or more survival functions `compare_surv`
 
 
-Estimating The Event (Surival) Function
+Estimating The Event (Survival) Function
 ---
 
 To estimate the survival function use the general form `est_surv(times, is_censored, method)`
@@ -36,19 +36,7 @@ To estimate the survival function use the general form `est_surv(times, is_censo
 
 * `method` is the desired method to estimate the survival function. The default is the Kaplan-Meier estimator. Other options are ... TBD.
 
-Describing The Survival Function
-----------------------------------
-
-Quantiles are a common discriptive statistic of the survival fucntion.
-
-Comparing Survival Functions
------------------------------
-
-
-Examples
----
-
-###Standard Kaplan-Meier estimates:
+###Standard Kaplan-Meier estimate example:
 
 Functions of this type of the following form
 
@@ -93,8 +81,13 @@ julia> plot(y=fit[:estimate], x=fit[:time]/7, Geom.step)
 ```
 ![image](km_img.png)
 
-###Quantiles
+Describing The Survival Function
+----------------------------------
 
+Quantiles are a common descriptive statistic of the survival function.
+
+Comparing Survival Functions
+-----------------------------
 
 What this does
 --------------
@@ -102,7 +95,7 @@ What this does
 **Event Functions as Verbs**: Describes time-to-event functions as verbs to make it clear what
  is being done to your event data.
 
-**Outputs [Tidy Data](http://vita.had.co.nz/papers/tidy-data.pdf)**: Ouputs calculations as tidy data.
+**Outputs [Tidy Data](http://vita.had.co.nz/papers/tidy-data.pdf)**: Outputs calculations as tidy data.
 Tidy data is language agnostic and an efficient way to work with data.
 
 **Act as Part of the Julia Statistics Eco System**: This package is not ambitious. It is not
@@ -126,5 +119,5 @@ to ouput data as tidy data whenever possible.
 **Act independent**: It would be a waste of users resources to make a user learn
 how to plot in in this package, or how to estimate parametric distributions in this
 package. This work has already been done by talented developers. This package
-provides neccesary time-to-event related calculations/summaries/comparisons
+provides necessary time-to-event related calculations/summaries/comparisons
 and tries to do nothing more.
