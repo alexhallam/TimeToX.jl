@@ -85,7 +85,7 @@ Guide.xlabel("Time (weeks)"),
 Guide.ylabel("Survival"),
 )
 ```
-![survival curve](readme_assests/km_img.png)
+![survival curve](readme_assets/km_img.png)
 
 Describing The Survival Function
 ----------------------------------
