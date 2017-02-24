@@ -82,7 +82,7 @@ Example
 ========
 
 	using DataFrames
-	whas100 = readtable("datasets/whas100.csv");
+	whas100 = readtable("../datasets/whas100.csv");
 	times = whas100[:lenfol];
 	is_censored = whas100[:fstat];
 	whas_surv = est_surv(times, is_censored);
@@ -97,16 +97,18 @@ survival curve has a flat spot exactly at the requested quantile. Then we
 use the median of the flat line.
 
 - Add tolerance argument to event_quantile function
+
+- Add midpoint to break ties.
 """
 
-function event_quantile(dataframe, probs = [.25, .5, .75])
+function describe_surv(dataframe, probs = [.25, .5, .75])
 	# Check that values are valid probabilities (between 0 and 1) and not NA
 	# throw error is probs are not valid
 	estimate = dataframe[:estimate]
 	time = dataframe[:time]
 
 	# add variables for length of probability vector and the nth quantile
-#	nprobs = length(probs);
+  #	nprobs = length(probs);
 	pname = trunc(Int, probs*100);
 
 	# If prob = 0 report start time else 0
@@ -114,18 +116,23 @@ function event_quantile(dataframe, probs = [.25, .5, .75])
 
 #	nth_percentile = pname;
 
-	# get first value that is equal to or less than each probability
-	quantile_estimate = [time[findfirst(value -> value <= i, estimate)] for i in probs]
+	# get first time that is equal to or less than each probability
+	quantile_survival = [estimate[findfirst(survival -> survival <= i, estimate)] for i in probs]
+	quantile_time = [time[findfirst(survival -> survival <= i, estimate)] for i in probs]
+
+	# does estimate[quantile_estimate_first[i][1]] = estimate[quantile_estimate_first[i][2]]
+	#estimate[quantile_estimate_first[1][1]] == estimate[quantile_estimate_first[1][2]]
 
 #	quantile_lower_conf = zeros(nprobs);
 #	quantile_upper_conf  = zeros(nprobs);
 
 	# Output is a data frame
 	quantileOutput = DataFrame(
-		nth_percentile = pname,
-		quantile_estimate = quantile_estimate
-#		quantile_lower_conf = quantile_lower_conf,
-#		quantile_upper_conf = quantile_upper_conf,
-							 )
+		nth_quantile = pname,
+		quantile_survival = quantile_survival,
+		quantile_time = quantile_time,
+		#quantile_estimate_first = quantile_estimate_first,
+		#quantile_estimate_last = quantile_estimate_last,
+					 )
 
 end

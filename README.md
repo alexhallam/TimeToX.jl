@@ -36,8 +36,6 @@ To estimate the survival function use the general form `est_surv(times, is_censo
 
 * `method` is the desired method to estimate the survival function. The default is the Kaplan-Meier estimator. Other options are ... TBD.
 
-###Standard Kaplan-Meier estimate example:
-
 Functions of this type of the following form
 
 ```julia
@@ -92,8 +90,23 @@ Describing The Survival Function
 
 Quantiles are a common descriptive statistic of the survival function.
 
+```julia
+whas100 = readtable("../datasets/whas100.csv");
+times = whas100[:lenfol];
+is_censored = whas100[:fstat];
+whas_surv = est_surv(times, is_censored);
+describe_surv(whas_surv)
+3×3 DataFrames.DataFrame
+│ Row │ nth_quantile │ quantile_survival │ quantile_time │
+├─────┼──────────────┼───────────────────┼───────────────┤
+│ 1   │ 25           │ 0.180281          │ 2710          │
+│ 2   │ 50           │ 0.46873           │ 2201          │
+│ 3   │ 75           │ 0.75              │ 538           │
+```
+
 Comparing Survival Functions
 -----------------------------
+
 
 What this does
 --------------
