@@ -107,6 +107,9 @@ describe_surv(whas_surv)
 Comparing Survival Functions
 -----------------------------
 
+```julia
+compare_surv()
+```
 
 What this does
 --------------
