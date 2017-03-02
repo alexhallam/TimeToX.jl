@@ -6,7 +6,7 @@ TimeToX
 
 Time-to-event analysis in Julia.
 
-![survival curve](readme_assets/bear2.jpg)
+![survival curve](readme_assets/bear.jpg)
 
 
 Installation
