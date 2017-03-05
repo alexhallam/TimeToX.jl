@@ -24,9 +24,9 @@ Arguments
 being compared
 
 Returns
-========
+=======
 
-values
+goodness of fit?
 
 Example
 ========
