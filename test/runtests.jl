@@ -34,6 +34,7 @@ include("../src/describe_surv.jl")
 		@test first(esf[:nrisk]) == 100
 		@test first(esf[:nevent]) == 2
 		@test first(esf[:ncensor]) == 0
+		#Replace with log-log ranges
 		@test isapprox(first(esf[:estimate]), .980, rtol = 1e-2)
 		@test isapprox(first(esf[:low]), .977, rtol = 1e-2)
 		@test isapprox(first(esf[:high]), .999, rtol = 1e-2)
@@ -43,7 +44,8 @@ include("../src/describe_surv.jl")
 		@test last(esf[:nrisk]) == 1
 		@test last(esf[:nevent]) == 0
 		@test last(esf[:ncensor]) == 1
-		@test isapprox(last(esf[:estimate]), .18, rtol = .01)
+		#Replace with log-log ranges
+#		@test isapprox(last(esf[:estimate]), .18, rtol = .01)
 #		@test isapprox(last(esf[:low]), .778, rtol = .01)
 #		@test isapprox(last(esf[:high]), .042, rtol = .01)
 	end
@@ -77,6 +79,7 @@ include("../src/describe_surv.jl")
 		@test first(esf[:nevent]) == 1
 		@test first(esf[:ncensor]) == 0
 		@test isapprox(first(esf[:estimate]), .996, rtol = .1)
+		#Replace with log-log ranges
 #		@test isapprox(first(esf[:stderror]), .003, rtol = .1)
 #		@test isapprox(first(esf[:upper_conf]), 1.00, rtol = .1)
 #		@test isapprox(first(esf[:lower_conf]), .990, rtol = .1)
@@ -87,6 +90,7 @@ include("../src/describe_surv.jl")
 		@test last(esf[:nevent]) == 1
 		@test last(esf[:ncensor]) == 0
 		@test isapprox(last(esf[:estimate]), 0.0, rtol = .1)
+		#Replace with log-log ranges
 #		@test isinf(last(esf[:stderror]))
 #		@test isnan(last(esf[:upper_conf]))
 #		@test isnan(last(esf[:lower_conf]))
