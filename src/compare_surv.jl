@@ -73,7 +73,9 @@ function compare_surv(
  # calculate the complement of the events over risk aka conditional probability of survival
  #event_proportion = 1-(nevent./nrisk)
 
-
+#1. output time correctly
+#2. find a way to do the log rank test
+#3. Is this appropriate for a dataframe or should significance be output
  compare_output = DataFrame(
 	 time = time,
 	 #d1i = d1i,
