@@ -98,6 +98,7 @@ function est_surv(
 
 	end
 
+	#Output DataFrame
 	survivalOutput = DataFrame(
 		time = t,
 		nrisk = nrisk,
