@@ -38,6 +38,13 @@ times = whas100[:lenfol];
 is_censored = whas100[:fstat];
 est_surv(times, is_censored);
 
+#small dataset
+times = [6,7,10,15,19,25]
+is_censored = [0,1,0,0,1,0,]
+group = [1,1,0,1,0,0]
+est = est_surv(times,is_censored)
+compare_surv = (est,group)
+
 Description of Variables Used In Code
 ======================================
 
@@ -57,11 +64,14 @@ Description of Variables Used In Code
 """
 
 function compare_surv(
-	times,
-	is_consored,
+	dataframe,
 	group
 	)
- t = sort!(unique(times))
+	#check that group is equal in length to dataframe
+	#group == time
+	time = dataframe[:time]
+	nrisk = dataframe[:nrisk]
+	ncensor = dataframe[:ncensor]
 
  # sum the number of times an event happens. if the event was censored it does not count as an event.
 
@@ -80,9 +90,9 @@ function compare_surv(
 	 time = time,
 	 #d1i = d1i,
 	# n1i = n1i,
-	 #di = ncensor,
-	 #ni = km,
-	 #e1i = low,
+   ni = nrisk,
+	 di = ncensor,
+	 group = group
 	 #v1i = high,
 	# L = log_rank,
 	# P = Peto-Prentice
