@@ -111,7 +111,11 @@ Comparing Survival Functions
 -----------------------------
 
 ```julia
-compare_surv()
+times = [6,7,10,15,19,25]
+is_censored = [0,1,0,0,1,0,]
+group = [1,1,0,1,0,0]
+est = est_surv(times,is_censored)
+compare_surv = (est,group)
 ```
 
 What this does
