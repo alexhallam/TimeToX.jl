@@ -110,6 +110,9 @@ describe_surv(whas_surv)
 Comparing Survival Functions
 -----------------------------
 
+This function uses the log-rank test to compare two
+time-to-event curves. 
+
 ```julia
 times = [6,7,10,15,19,25]
 is_censored = [0,1,0,0,1,0,]
