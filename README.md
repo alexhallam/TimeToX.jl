@@ -111,7 +111,8 @@ Comparing Survival Functions
 -----------------------------
 
 This function uses the log-rank test to compare two
-time-to-event curves. 
+time-to-event curves. Not sure how data should be ouput
+with this function.
 
 ```julia
 times = [6,7,10,15,19,25]
@@ -120,6 +121,8 @@ group = [1,1,0,1,0,0]
 est = est_surv(times,is_censored)
 compare_surv = (est,group)
 ```
+
+
 
 What this does
 --------------
