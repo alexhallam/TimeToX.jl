@@ -122,6 +122,10 @@ est = est_surv(times,is_censored)
 compare_surv = (est,group)
 ```
 
+Estimate Proportional Hazard
+------------------------------
+
+- Still debating if this is a good package for coxph. 
 
 
 What this does
