@@ -94,11 +94,11 @@ Describing The Survival Function
 Quantiles are a common descriptive statistic of the survival function.
 
 ```julia
-whas100 = readtable("../datasets/whas100.csv");
-times = whas100[:lenfol];
-is_censored = whas100[:fstat];
-whas_surv = est_surv(times, is_censored);
-describe_surv(whas_surv)
+julia> whas100 = readtable("../datasets/whas100.csv");
+julia> times = whas100[:lenfol];
+julia> is_censored = whas100[:fstat];
+julia> whas_surv = est_surv(times, is_censored);
+julia> describe_surv(whas_surv)
 3×3 DataFrames.DataFrame
 │ Row │ nth_quantile │ quantile_survival │ quantile_time │
 ├─────┼──────────────┼───────────────────┼───────────────┤
@@ -115,17 +115,17 @@ time-to-event curves. Not sure how data should be ouput
 with this function.
 
 ```julia
-times = [6,7,10,15,19,25]
-is_censored = [0,1,0,0,1,0,]
-group = [1,1,0,1,0,0]
-est = est_surv(times,is_censored)
-compare_surv = (est,group)
+julia> times = [6,7,10,15,19,25]
+julia> is_censored = [0,1,0,0,1,0,]
+julia> group = [1,1,0,1,0,0]
+julia> est = est_surv(times,is_censored)
+julia> compare_surv = (est,group)
 ```
 
 Estimate Proportional Hazard
 ------------------------------
 
-- Still debating if this is a good package for coxph. 
+- Still debating if this is a good package for coxph.
 
 
 What this does
