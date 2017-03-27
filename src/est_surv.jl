@@ -105,8 +105,8 @@ function est_surv(
 		nevent = nevent,
 		ncensor = ncensor,
 		estimate = km,
-		low = low,
-		high = high,
+		lower_conf = low,
+		upper_conf = high,
 	   );
 
 end
