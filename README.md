@@ -1,12 +1,11 @@
-TimeToX
-===========
+![time to x](readme_assets/timetox.png)
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/concept.svg)](http://www.repostatus.org/#concept)
 [![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE.md)
 
 Time-to-event analysis in Julia.
 
-![survival curve](readme_assets/bear.png)
+![survival curve](readme_assets/km_img.png)
 
 
 Installation
