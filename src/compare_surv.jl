@@ -4,9 +4,15 @@
 Description
 ============
 
-Compares two Survival Functions. Accepts survival data and outputs significance.
-It uses `time`, `is_censored`, and `group`. The method used to compare survivals
-is the log-rank function.
+Compares two Survival Functions. Given two events, A and B, determines whether
+the data generating processes are statistically different. The test-statistic
+is chi-squared under the null hypothesis.
+
+H_0: both time-to-event series are from the same generating processes
+H_A: the time-to-event series are from different generating processes.
+
+The method used to compare the time-to-event series is the log-rank test.
+
 
 Usage
 ======
@@ -16,18 +22,24 @@ Usage
 Arguments
 =========
 
-- **`time`** : The length of time to event
+- **`time_A`** : The time to event 'A'.
 
-- **`is_censored`** : A vector of bools. 1 == censored and 0 == not censored
+- **`time_B`** : The time to event 'B'.
 
-- **`group`** : A vector of integers such as 0/1 or 1/2 to identify the two groups
-being compared
+- **`is_censored_A`** : A vector of bools. 1 == censored and 0 == not censored
+
+- **`is_censored_B`** : A vector of bools. 1 == censored and 0 == not censored
+
+- **`alpha`** : The level of significance. Default is 0.95
+
+- **`group`** : A vector of integers such as [0,1] or [1,2] to identify the two
+groups being compared
 
 
 Returns
 ========
 
-values
+The the result prints 'p_value', 'summary', 'test_statistic', 'test_result'
 
 Example
 ========
@@ -43,7 +55,7 @@ times = [6,7,10,15,19,25]
 is_censored = [0,1,0,0,1,0,]
 group = [1,1,0,1,0,0]
 est = est_surv(times,is_censored)
-compare_surv = (est,group)
+compare_surv = (times, is_censored, group)
 
 Description of Variables Used In Code
 ======================================
@@ -63,38 +75,16 @@ Description of Variables Used In Code
 
 """
 
+# https://web.stanford.edu/~lutian/coursepdf/unitweek3.pdf
+event = [3.1,6.8,9,9,11.3,16.2,8.7,9,10.1,12.1,18.7,23.1]
+is_censored = [0,1,0,0,1,0,0,0,1,1,0,1]
+group = [0,0,0,0,0,0,1,1,1,1,1,1]
 function compare_surv(
-	dataframe,
-	group
+	event, is_censored, group
 	)
-	#check that group is equal in length to dataframe
-	#group == time
-	time = dataframe[:time]
-	nrisk = dataframe[:nrisk]
-	ncensor = dataframe[:ncensor]
 
- # sum the number of times an event happens. if the event was censored it does not count as an event.
+	df = DataFrame(event = event, is_censored = is_censored, group = group)
 
- #nrisk = [count(i->(i>=j),times) for j in t]
-
- # for each unique time count the censored events
- #ncensor = [count(i->(i==0), is_censored[findin(times, j)]) for j in t]
-
- # calculate the complement of the events over risk aka conditional probability of survival
- #event_proportion = 1-(nevent./nrisk)
-
-#1. output time correctly
-#2. find a way to do the log rank test
-#3. Is this appropriate for a dataframe or should significance be output
- compare_output = DataFrame(
-	 time = time,
-	 #d1i = d1i,
-	# n1i = n1i,
-   ni = nrisk,
-	 di = ncensor,
-	 group = group
-	 #v1i = high,
-	# L = log_rank,
-	# P = Peto-Prentice
-		);
 end
+
+df = compare_surv(event,is_censored,group)
