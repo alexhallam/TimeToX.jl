@@ -60,31 +60,44 @@ compare_surv = (times, is_censored, group)
 Description of Variables Used In Code
 ======================================
 
-		| Event/Group   | 1          | 0         | Total    |
+		| Event/Group   | Control    | Treatment | Total    |
 		| ------------- | ---------- | --------- | -------- |
-		| Die           | d1i        | d0i       | di       |
-		| Not Die       | n1i - d1i  | n0i - d0i | ni-di    |
-		| At Risk       | n1i        | n0i       | ni       |
+		| Failure       | d1i        | d0i       | di       |
+		| Non-Failure   | n1i - d1i  | n0i - d0i | ni-di    |
+		| Total         | n1i        | n0i       | ni       |
 
-		n0i = number at risk at time i in group 0
-		n1i = number at risk at time i in group 1
-		d0i = number of deaths at time i in group 0
-		d1i = number of deaths at time i in group 1
-		ni = total number at risk at time i
-		di = total number of deaths at time i
+		n0i = `control_total` = number at risk at time i in group 0
+		n1i = `treatment_total` = number at risk at time i in group 1
+		d0i = `control_failure` = number of failure at time i in group 0
+		d1i = `treatment_failure` = number of deaths at time i in group 1
+		ni = `table_total` = total number at risk at time i
+		di = `failure_total` = total number of deaths at time i
 
 """
-
+#requres DataFrames and DataFramesMeta
 # https://web.stanford.edu/~lutian/coursepdf/unitweek3.pdf
-event = [3.1,6.8,9,9,11.3,16.2,8.7,9,10.1,12.1,18.7,23.1]
-is_censored = [0,1,0,0,1,0,0,0,1,1,0,1]
-group = [0,0,0,0,0,0,1,1,1,1,1,1]
+#event = [3.1,6.8,9,9,11.3,16.2,8.7,9,10.1,12.1,18.7,23.1]
+#is_censored = [0,1,0,0,1,0,0,0,1,1,0,1]
+#group = [0,0,0,0,0,0,1,1,1,1,1,1]
 function compare_surv(
-	event, is_censored, group
+	times, is_censored, is_control
 	)
 
-	df = DataFrame(event = event, is_censored = is_censored, group = group)
+	include("helpers/survival_table_from_events.jl")
+	table = survival_table_from_events(times,is_censored,group)
+
+	##log-rank test statistic
+	#sum of control_failure - sum of expected_value
+	U = sum(table[:control_failure]) - sum(table[:expected_value])
+	#sum of varianec
+	V = sum(table[:variance])
+	#log-rank is a chi-squared distribution which is U^2/V
+	log_rank = U^2/V
+
+	if log_rank < 3.8416
+		@printf "With a χ² value of %f the two group are not statistically significant at the α = 0.05 level" log_rank
+	else
+		@printf "With a χ² value of %f the two group are statistically significant at the α = 0.05 level" log_rank
+	end
 
 end
-
-df = compare_surv(event,is_censored,group)
