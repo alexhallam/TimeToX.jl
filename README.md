@@ -115,10 +115,10 @@ with this function.
 
 ```julia
 julia> times = [6,7,10,15,19,25]
-julia> is_censored = [0,1,0,0,1,0,]
-julia> group = [1,1,0,1,0,0]
-julia> est = est_surv(times,is_censored)
-julia> compare_surv = (est,group)
+julia> is_censored = [1,0,1,1,0,1]
+julia> is_control = [1,1,0,1,0,0]
+julia> compare_surv(times,is_censored,is_control)
+With a χ² value of 1.273684 the two group are not statistically significant at the α = 0.05 level
 ```
 
 Estimate Proportional Hazard
