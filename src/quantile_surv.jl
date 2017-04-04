@@ -101,7 +101,7 @@ use the median of the flat line.
 - Add midpoint to break ties.
 """
 
-function describe_surv(dataframe, probs = [.25, .5, .75])
+function quantile_surv(dataframe, probs = [.25, .5, .75])
 	# Check that values are valid probabilities (between 0 and 1) and not NA
 	# throw error is probs are not valid
 	estimate = dataframe[:estimate]
@@ -113,8 +113,6 @@ function describe_surv(dataframe, probs = [.25, .5, .75])
 
 	# If prob = 0 report start time else 0
 	# Todo
-
-#	nth_percentile = pname;
 
 	# get first time that is equal to or less than each probability
 	quantile_survival = [estimate[findfirst(survival -> survival <= i, estimate)] for i in probs]

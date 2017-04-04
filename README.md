@@ -22,7 +22,7 @@ This package has the following actions.
 
 * Estimates the survival function `est_surv`
 
-* Describes the survival function `describe_surv`
+* Describes the survival function `quantile_surv`
 
 * Compares two or more survival functions `compare_surv`
 
@@ -36,7 +36,7 @@ To estimate the survival function use the general form `est_surv(times, is_censo
 
 * `is_censored` is a vector of ones and zeros. `1` indicates that the event is censored and `0` indicates that it is not censored.
 
-* `method` is the desired method to estimate the survival function. The default is the Kaplan-Meier estimator. Other options are ... TBD.
+* `method` is the desired method to estimate the survival function. The default is the Kaplan-Meier estimator. Other options are TBD.
 
 Functions of this type of the following form
 
@@ -87,8 +87,8 @@ Guide.ylabel("Survival"),
 ```
 ![survival curve](readme_assets/km_img.png)
 
-Describing The Survival Function
-----------------------------------
+Quantiles of the  Survival Function
+------------------------------------
 
 Quantiles are a common descriptive statistic of the survival function.
 
@@ -97,7 +97,7 @@ julia> whas100 = readtable("../datasets/whas100.csv");
 julia> times = whas100[:lenfol];
 julia> is_censored = whas100[:fstat];
 julia> whas_surv = est_surv(times, is_censored);
-julia> describe_surv(whas_surv)
+julia> quantile_surv(whas_surv)
 3×3 DataFrames.DataFrame
 │ Row │ nth_quantile │ quantile_survival │ quantile_time │
 ├─────┼──────────────┼───────────────────┼───────────────┤
@@ -121,41 +121,18 @@ julia> compare_surv(times,is_censored,is_control)
 With a χ² value of 1.273684 the two group are not statistically significant at the α = 0.05 level
 ```
 
-Estimate Proportional Hazard
-------------------------------
 
-- Still debating if this is a good package for coxph.
+What this does different
+-------------------------
 
+**Event Functions as Verbs**: Describes time-to-event functions as verbs to make
+it clear what is being done to your event data. Functions could have been named
+`Kaplan-Meier()` or `log-rank()`, but it seems that `est_surv()` and `compare_surv`.
+seem more descriptive. This may turn out to be a bad idea. I am not sure.
 
-What this does
---------------
+ToDo
+=====
 
-**Event Functions as Verbs**: Describes time-to-event functions as verbs to make it clear what
- is being done to your event data.
+ - Handel midpoints in `quantile_surv()`
 
-**Outputs [Tidy Data](http://vita.had.co.nz/papers/tidy-data.pdf)**: Outputs calculations as tidy data.
-Tidy data is language agnostic and an efficient way to work with data.
-
-**Act as Part of the Julia Statistics Eco System**: This package is not ambitious. It is not
-trying to do everything. It simply takes event data in returns values that are specific to
-time-to-event analysis. As a result plotting is not part of this package, as
-[Gadfly](http://gadflyjl.org/stable/) and [Plots.jl](https://github.com/JuliaPlots/Plots.jl)
-are good plotting libraries. Also, the survival function can be estimated with many methods,
-Some of those methods are parametric. It should be possible to use the
-[Distributions.jl](https://github.com/JuliaPlots/Plots.jl) package to do this kind of analysis.
-
-
-What this does not do
-----------------------
-
-**Name functions according to statistical test**: This may turn out to be a bad idea. I am not sure.
-
-**Ouput data in various formats**: A huge amount of time is spent cleaning data to get ready
-for analysis. One solution to this problem is to have packages involved in the data pipline
-to ouput data as tidy data whenever possible.
-
-**Act independent**: It would be a waste of users resources to make a user learn
-how to plot in in this package, or how to estimate parametric distributions in this
-package. This work has already been done by talented developers. This package
-provides necessary time-to-event related calculations/summaries/comparisons
-and tries to do nothing more.
+ - Still debating if this is a good package for coxph.
