@@ -19,9 +19,6 @@ Arguments
 
 - **`is_censored`** : A vector of bools. 1 == censored and 0 == not censored
 
-- **`method`** : Method used to estimate the survival function. Default is KM.
-Options are `km` for Kapan-Meirer, ...
-
 Returns
 ========
 - **`time`**: Sorted timepoints
@@ -50,14 +47,13 @@ Example
 	whas100 = readtable("datasets/whas100.csv");
 	times = whas100[:lenfol];
 	is_censored = whas100[:fstat];
-	est_surv(times, is_censored);
+	est_surv(times, is_censored)
 
 """
 
 function est_surv(
 	times,
-	is_censored;
-	#method::AbstractString = "km"
+	is_censored
 		  )
 
 	# sort unique times
@@ -76,15 +72,15 @@ function est_surv(
 	event_proportion::Array{Float64,1} = 1-(nevent./nrisk)
 
 	# Kaplan-Meier estimator is the cumulative product of complement of the events over risk
-	#if method == "km"
 
 	# Calculate the survival estimate `Kaplan`
 	km::Array{Float64,1} = cumprod(event_proportion)
+
 	# Greenwood estimate is ...
-  delta::Array{Float64,1} = [nrisk[i]!=nevent[i]?nevent[i]/(nrisk[i]*(nrisk[i]-nevent[i])):0 for i = 1:length(nrisk)]
+	delta::Array{Float64,1} = [nrisk[i]!=nevent[i]?nevent[i]/(nrisk[i]*(nrisk[i]-nevent[i])):0 for i = 1:length(nrisk)]
 
 	# take cumsum of delta
-  cumsum_delta::Array{Float64,1} = [sum(delta[1:i]) for i = 1:length(nrisk)]
+	cumsum_delta::Array{Float64,1} = [sum(delta[1:i]) for i = 1:length(nrisk)]
 
 	# log-log CI
 	log_log_var::Array{Float64,1} = [1/(log(km[i])^2)*cumsum_delta[i] for i = 1:length(km)]
@@ -94,10 +90,8 @@ function est_surv(
 	high::Array{Float64,1} = exp(-exp(c_low))
 	low::Array{Float64,1} = exp(-exp(c_high))
 
-	#end
-
 	# Output DataFrame
-	survivalOutput = DataFrame(
+	return survivalOutput = DataFrame(
 		time = t,
 		nrisk = nrisk,
 		nevent = nevent,
