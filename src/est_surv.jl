@@ -56,8 +56,12 @@ function est_surv(
 	is_censored
 		  )
 
+	#convert dataframes cols to vectors for speed
+	times = convert(Vector, times)
+	is_censored = convert(Vector, is_censored)
+
 	# sort unique times
-	t::DataArrays.DataArray{Int64,1} = sort!(unique(times))
+	t = sort!(unique(times))
 
 	# sum the number of times an event happens. if the event was censored it does not count as an event.
 	nevent::Array{Int64,1} = [sum(is_censored[findin(times, i)]) for i in t]
@@ -91,7 +95,7 @@ function est_surv(
 	low::Array{Float64,1} = exp(-exp(c_high))
 
 	# Output DataFrame
-	return survivalOutput = DataFrame(
+	survivalOutput = DataFrame(
 		time = t,
 		nrisk = nrisk,
 		nevent = nevent,
