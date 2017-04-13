@@ -48,14 +48,14 @@ using DataFrames
 whas100 = readtable("datasets/whas100.csv");
 times = whas100[:lenfol];
 is_censored = whas100[:fstat];
-est_surv(times, is_censored);
+compare_surv(times, is_censored, gender)
 
 #small dataset
 times = [6,7,10,15,19,25]
 is_censored = [0,1,0,0,1,0,]
 group = [1,1,0,1,0,0]
 est = est_surv(times,is_censored)
-compare_surv = (times, is_censored, group)
+compare_surv(times, is_censored, group)
 
 Description of Variables Used In Code
 ======================================

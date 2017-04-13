@@ -28,7 +28,7 @@ This package has the following actions.
 
 
 Estimating The Event (Survival) Function
----
+-----------------------------------------
 
 To estimate the survival function use the general form `est_surv(times, is_censored, method)`
 
@@ -110,8 +110,7 @@ Comparing Survival Functions
 -----------------------------
 
 This function uses the log-rank test to compare two
-time-to-event curves. Not sure how data should be ouput
-with this function.
+time-to-event curves.
 
 ```julia
 julia> times = [6,7,10,15,19,25]
@@ -125,14 +124,15 @@ With a χ² value of 1.273684 the two group are not statistically significant at
 What this does different
 -------------------------
 
-**Event Functions as Verbs**: Describes time-to-event functions as verbs to make
-it clear what is being done to your event data. Functions could have been named
-`Kaplan-Meier()` or `log-rank()`, but it seems that `est_surv()` and `compare_surv`.
-seem more descriptive. This may turn out to be a bad idea. I am not sure.
+**Event Functions as Verbs**: When possible, time-to-event functions are verbs.
+Functions could have been named `Kaplan-Meier()` or `log-rank()`, but it seems
+that `est_surv()` and `compare_surv` seem more descriptive.
+This may turn out to be a bad idea. I am not sure.
 
 ToDo
 =====
 
- - Handel midpoints in `quantile_surv()`
+ - Handel midpoints that land on horizontal parts of the step function in
+ `quantile_surv()`
 
  - Still debating if this is a good package for coxph.

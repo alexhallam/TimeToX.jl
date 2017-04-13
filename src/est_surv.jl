@@ -57,48 +57,46 @@ Example
 function est_surv(
 	times,
 	is_censored;
-	method::AbstractString = "km"
+	#method::AbstractString = "km"
 		  )
 
 	# sort unique times
-	t = sort!(unique(times))
+	t::DataArrays.DataArray{Int64,1} = sort!(unique(times))
 
 	# sum the number of times an event happens. if the event was censored it does not count as an event.
-	nevent = [sum(is_censored[findin(times, i)]) for i in t]
+	nevent::Array{Int64,1} = [sum(is_censored[findin(times, i)]) for i in t]
 
 	# as events happen the number at risk decreases. as j iterates through t all i gerater than j is counted.
-	nrisk = [count(i->(i>=j),times) for j in t]
+	nrisk::Array{Int64,1} = [count(i->(i>=j),times) for j in t]
 
 	# for each unique time count the censored events
-	ncensor = [count(i->(i==0), is_censored[findin(times, j)]) for j in t]
+	ncensor::Array{Int64,1} = [count(i->(i==0), is_censored[findin(times, j)]) for j in t]
 
 	# calculate the complement of the events over risk aka conditional probability of survival
-	event_proportion = 1-(nevent./nrisk)
+	event_proportion::Array{Float64,1} = 1-(nevent./nrisk)
 
 	# Kaplan-Meier estimator is the cumulative product of complement of the events over risk
-	if method == "km"
+	#if method == "km"
 
-		# Calculate the survival estimate `Kaplan`
-		km = cumprod(event_proportion)
-		# Greenwood estimate is ...
-    delta::Array{Float64,1} = [nrisk[i]!=nevent[i]?nevent[i]/(nrisk[i]*(nrisk[i]-nevent[i])):0 for i = 1:length(nrisk)]
+	# Calculate the survival estimate `Kaplan`
+	km::Array{Float64,1} = cumprod(event_proportion)
+	# Greenwood estimate is ...
+  delta::Array{Float64,1} = [nrisk[i]!=nevent[i]?nevent[i]/(nrisk[i]*(nrisk[i]-nevent[i])):0 for i = 1:length(nrisk)]
 
-		# take cumsum of delta
-	  cumsum_delta = [sum(delta[1:i]) for i = 1:length(nrisk)]
-		cumsum_delta
+	# take cumsum of delta
+  cumsum_delta::Array{Float64,1} = [sum(delta[1:i]) for i = 1:length(nrisk)]
 
-		# log-log CI
-		log_log_var = [1/(log(km[i])^2)*cumsum_delta[i] for i = 1:length(km)]
-		log_log_sqrt = sqrt(log_log_var)
-		c_low = log(-log(km))-1.96*log_log_sqrt
-		c_high = log(-log(km))+1.96*log_log_sqrt
-		high = exp(-exp(c_low))
-		low = exp(-exp(c_high))
+	# log-log CI
+	log_log_var::Array{Float64,1} = [1/(log(km[i])^2)*cumsum_delta[i] for i = 1:length(km)]
+	log_log_sqrt::Array{Float64,1} = sqrt(log_log_var)
+	c_low::Array{Float64,1} = log(-log(km))-1.96*log_log_sqrt
+	c_high::Array{Float64,1} = log(-log(km))+1.96*log_log_sqrt
+	high::Array{Float64,1} = exp(-exp(c_low))
+	low::Array{Float64,1} = exp(-exp(c_high))
 
+	#end
 
-	end
-
-	#Output DataFrame
+	# Output DataFrame
 	survivalOutput = DataFrame(
 		time = t,
 		nrisk = nrisk,
