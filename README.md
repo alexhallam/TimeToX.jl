@@ -1,10 +1,12 @@
-TimeToX
-===========
+![time to x](readme_assets/timetox.png)
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/concept.svg)](http://www.repostatus.org/#concept)
 [![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE.md)
 
 Time-to-event analysis in Julia.
+
+![survival curve](readme_assets/km_img.png)
+
 
 Installation
 ------------
@@ -20,13 +22,13 @@ This package has the following actions.
 
 * Estimates the survival function `est_surv`
 
-* Describes the survival function `describe_surv`
+* Describes the survival function `quantile_surv`
 
 * Compares two or more survival functions `compare_surv`
 
 
 Estimating The Event (Survival) Function
----
+-----------------------------------------
 
 To estimate the survival function use the general form `est_surv(times, is_censored, method)`
 
@@ -34,7 +36,7 @@ To estimate the survival function use the general form `est_surv(times, is_censo
 
 * `is_censored` is a vector of ones and zeros. `1` indicates that the event is censored and `0` indicates that it is not censored.
 
-* `method` is the desired method to estimate the survival function. The default is the Kaplan-Meier estimator. Other options are ... TBD.
+* `method` is the desired method to estimate the survival function. The default is the Kaplan-Meier estimator. Other options are TBD.
 
 Functions of this type of the following form
 
@@ -85,17 +87,17 @@ Guide.ylabel("Survival"),
 ```
 ![survival curve](readme_assets/km_img.png)
 
-Describing The Survival Function
-----------------------------------
+Quantiles of the  Survival Function
+------------------------------------
 
 Quantiles are a common descriptive statistic of the survival function.
 
 ```julia
-whas100 = readtable("../datasets/whas100.csv");
-times = whas100[:lenfol];
-is_censored = whas100[:fstat];
-whas_surv = est_surv(times, is_censored);
-describe_surv(whas_surv)
+julia> whas100 = readtable("../datasets/whas100.csv");
+julia> times = whas100[:lenfol];
+julia> is_censored = whas100[:fstat];
+julia> whas_surv = est_surv(times, is_censored);
+julia> quantile_surv(whas_surv)
 3×3 DataFrames.DataFrame
 │ Row │ nth_quantile │ quantile_survival │ quantile_time │
 ├─────┼──────────────┼───────────────────┼───────────────┤
@@ -107,39 +109,30 @@ describe_surv(whas_surv)
 Comparing Survival Functions
 -----------------------------
 
+This function uses the log-rank test to compare two
+time-to-event curves.
+
 ```julia
-compare_surv()
+julia> times = [6,7,10,15,19,25]
+julia> is_censored = [1,0,1,1,0,1]
+julia> is_control = [1,1,0,1,0,0]
+julia> compare_surv(times,is_censored,is_control)
+With a χ² value of 1.273684 the two group are not statistically significant at the α = 0.05 level
 ```
 
-What this does
---------------
 
-**Event Functions as Verbs**: Describes time-to-event functions as verbs to make it clear what
- is being done to your event data.
+What this does different
+-------------------------
 
-**Outputs [Tidy Data](http://vita.had.co.nz/papers/tidy-data.pdf)**: Outputs calculations as tidy data.
-Tidy data is language agnostic and an efficient way to work with data.
+**Event Functions as Verbs**: When possible, time-to-event functions are verbs.
+Functions could have been named `Kaplan-Meier()` or `log-rank()`, but it seems
+that `est_surv()` and `compare_surv` seem more descriptive.
+This may turn out to be a bad idea. I am not sure.
 
-**Act as Part of the Julia Statistics Eco System**: This package is not ambitious. It is not
-trying to do everything. It simply takes event data in returns values that are specific to
-time-to-event analysis. As a result plotting is not part of this package, as
-[Gadfly](http://gadflyjl.org/stable/) and [Plots.jl](https://github.com/JuliaPlots/Plots.jl)
-are good plotting libraries. Also, the survival function can be estimated with many methods,
-Some of those methods are parametric. It should be possible to use the
-[Distributions.jl](https://github.com/JuliaPlots/Plots.jl) package to do this kind of analysis.
+ToDo
+=====
 
+ - Handel midpoints that land on horizontal parts of the step function in
+ `quantile_surv()`
 
-What this does not do
-----------------------
-
-**Name functions according to statistical test**: This may turn out to be a bad idea. I am not sure.
-
-**Ouput data in various formats**: A huge amount of time is spent cleaning data to get ready
-for analysis. One solution to this problem is to have packages involved in the data pipline
-to ouput data as tidy data whenever possible.
-
-**Act independent**: It would be a waste of users resources to make a user learn
-how to plot in in this package, or how to estimate parametric distributions in this
-package. This work has already been done by talented developers. This package
-provides necessary time-to-event related calculations/summaries/comparisons
-and tries to do nothing more.
+ - Still debating if this is a good package for coxph.
