@@ -39,7 +39,7 @@ To estimate the survival function use the general form `est_surv(times, is_censo
 Functions of this type of the following form
 
 ```julia
-est_surv(times, is_censored, method = "km")
+est_surv(times, is_censored)
 ```
 
 Lets run through an example with the `whas100` dataset which is included in
@@ -49,7 +49,7 @@ this package.
 julia> whas100 = readtable("../datasets/whas100.csv")
 julia> times = whas100[:lenfol]
 julia> is_censored = whas100[:fstat]
-julia> fit = est_surv(times, is_censored, method = "km")
+julia> fit = est_surv(times, is_censored)
 95×7 DataFrames.DataFrame
 │ Row │ time │ nrisk │ nevent │ ncensor │ estimate │ low       │ high     │
 ├─────┼──────┼───────┼────────┼─────────┼──────────┼───────────┼──────────┤
