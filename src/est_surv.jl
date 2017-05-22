@@ -88,11 +88,11 @@ function est_surv(
 
 	# log-log CI
 	log_log_var::Array{Float64,1} = [1/(log(km[i])^2)*cumsum_delta[i] for i = 1:length(km)]
-	log_log_sqrt::Array{Float64,1} = sqrt(log_log_var)
-	c_low::Array{Float64,1} = log(-log(km))-1.96*log_log_sqrt
-	c_high::Array{Float64,1} = log(-log(km))+1.96*log_log_sqrt
-	high::Array{Float64,1} = exp(-exp(c_low))
-	low::Array{Float64,1} = exp(-exp(c_high))
+	log_log_sqrt::Array{Float64,1} = sqrt.(log_log_var)
+	c_low::Array{Float64,1} = log.(-log.(km))-1.96*log_log_sqrt
+	c_high::Array{Float64,1} = log.(-log.(km))+1.96*log_log_sqrt
+	high::Array{Float64,1} = exp.(-exp.(c_low))
+	low::Array{Float64,1} = exp.(-exp.(c_high))
 
 	# Output DataFrame
 	survivalOutput = DataFrame(

@@ -109,7 +109,7 @@ function quantile_surv(dataframe, probs = [.25, .5, .75])
 
 	# add variables for length of probability vector and the nth quantile
   #	nprobs = length(probs);
-	pname = trunc(Int, probs*100);
+	pname = trunc.(Int, probs*100);
 
 	# If prob = 0 report start time else 0
 	# Todo

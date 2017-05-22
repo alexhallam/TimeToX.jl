@@ -49,8 +49,8 @@ this package.
 
 ```julia
 julia> whas100 = readtable("../datasets/whas100.csv")
-julia> times = whas100[:lenfol]
-julia> is_censored = whas100[:fstat]
+julia> times = whas100[:lenfol];
+julia> is_censored = whas100[:fstat];
 julia> fit = est_surv(times, is_censored)
 95×7 DataFrames.DataFrame
 │ Row │ time │ nrisk │ nevent │ ncensor │ estimate │ low       │ high     │
@@ -115,7 +115,7 @@ time-to-event curves.
 ```julia
 julia> times = [6,7,10,15,19,25]
 julia> is_censored = [1,0,1,1,0,1]
-julia> is_control = [1,1,0,1,0,0]
+julia> group = is_control = [1,1,0,1,0,0]
 julia> compare_surv(times,is_censored,is_control)
 With a χ² value of 1.273684 the two group are not statistically significant at the α = 0.05 level
 ```
@@ -126,8 +126,7 @@ What this does different
 
 **Event Functions as Verbs**: When possible, time-to-event functions are verbs.
 Functions could have been named `Kaplan-Meier()` or `log-rank()`, but it seems
-that `est_surv()` and `compare_surv` seem more descriptive.
-This may turn out to be a bad idea. I am not sure.
+that `est_surv()` and `compare_surv()` seem more descriptive.
 
 ToDo
 =====
@@ -135,4 +134,6 @@ ToDo
  - Handel midpoints that land on horizontal parts of the step function in
  `quantile_surv()`
 
- - Still debating if this is a good package for coxph.
+ - add coxph. `reg_coxph()`
+
+ - add tests for `compare_sur()` 
