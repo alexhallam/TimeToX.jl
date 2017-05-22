@@ -1,3 +1,4 @@
+#Note to self: to run this file use Pkg.test("TimeToX")
 # include("runtests.jl")
 using Base.Test, DataFrames, DataFramesMeta
 include("../src/est_surv.jl")
