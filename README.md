@@ -132,7 +132,7 @@ Table of Survival Grammar
 -------------------------
 
 |Function        | Verb      | Noun        |  Description                                                     | 
-|--------------- |:--------: |:-----------:|:----------------------------------------------------------------:|
+|--------------- |:--------: |:-----------:|----------------------------------------------------------------- |
 |`est_surv`      | estimate  | survival    |  Estimates the survival function with the Kaplan-Meier estimator |
 |`compare_surv`  | compare	 | survivals   |  Uses the log-rank test to compare the survival curves.          |
 |`reg_coxph`	 | regress	 | coxph	   |  Regression using coxph                                          |  
