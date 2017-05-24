@@ -15,10 +15,19 @@ Installation
 Pkg.clone("https://github.com/alexhallam/TimeToX.jl")
 ```
 
+Table of Grammar
+-------------------------
+
+|Function        | Verb      | Noun        |  Description                                                     | 
+|--------------- |:--------: |:-----------:|----------------------------------------------------------------- |
+|`est_surv`      | estimate  | survival    |  Estimates the survival function with the Kaplan-Meier estimator |
+|`compare_surv`  | compare	 | survivals   |  Uses the log-rank test to compare the survival curves.          |
+|`reg_coxph`	 | regress	 | coxph	   |  Regression using coxph                                          |  
+
 Getting Started
 ----------------
 
-This package has the following actions.
+This package has the following function.
 
 * Estimates the survival function `est_surv`
 
@@ -127,15 +136,6 @@ What this does different
 **Event Functions as Verbs**: When possible, time-to-event functions are verbs.
 Functions could have been named `Kaplan-Meier()` or `log-rank()`, but it seems
 that `est_surv()` and `compare_surv()` seem more descriptive.
-
-Table of Survival Grammar
--------------------------
-
-|Function        | Verb      | Noun        |  Description                                                     | 
-|--------------- |:--------: |:-----------:|----------------------------------------------------------------- |
-|`est_surv`      | estimate  | survival    |  Estimates the survival function with the Kaplan-Meier estimator |
-|`compare_surv`  | compare	 | survivals   |  Uses the log-rank test to compare the survival curves.          |
-|`reg_coxph`	 | regress	 | coxph	   |  Regression using coxph                                          |  
 
 ToDo
 =====
