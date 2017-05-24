@@ -3,7 +3,7 @@
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/concept.svg)](http://www.repostatus.org/#concept)
 [![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE.md)
 
-Time-to-event analysis in Julia.
+Time-to-event and survival analysis in Julia.
 
 ![survival curve](readme_assets/km_img.png)
 
@@ -127,6 +127,15 @@ What this does different
 **Event Functions as Verbs**: When possible, time-to-event functions are verbs.
 Functions could have been named `Kaplan-Meier()` or `log-rank()`, but it seems
 that `est_surv()` and `compare_surv()` seem more descriptive.
+
+Table of Survival Grammar
+-------------------------
+
+Function         Verb      Noun          Description
+--------------- ---------- ------------ -----------------------------------------------------------------
+`est_surv`       estimate   survival     Estimates the survival function with the Kaplan-Meier estimator
+`compare_surv`   compare	survivals	 Uses the log-rank test to compare the survival curves.
+`reg_coxph`		 regress	coxph		 Regression using coxph
 
 ToDo
 =====
