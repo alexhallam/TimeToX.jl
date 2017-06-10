@@ -66,7 +66,7 @@ function est_surv(
 	# sum the number of times an event happens. if the event was censored it does not count as an event.
 	nevent::Array{Int64,1} = [sum(is_censored[findin(times, i)]) for i in t]
 
-	# as events happen the number at risk decreases. as j iterates through t all i gerater than j is counted.
+	# as events happen the number at risk decreases. as j iterates through t all i greater than j are counted.
 	nrisk::Array{Int64,1} = [count(i->(i>=j),times) for j in t]
 
 	# for each unique time count the censored events
