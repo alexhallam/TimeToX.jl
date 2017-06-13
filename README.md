@@ -135,8 +135,8 @@ Regression With CoxPH
 ```julia
 julia>using JuMP, Ipopt
 julia>times = [6,7,10,15,19,25];
-julia>is_censored = 1-[1,0,1,1,0,1];
-julia>is_control = 1-[1,1,0,1,0,0];
+julia>is_censored = [0, 0, 1, 0, 1, 1];
+julia>is_control = [0, 0, 1, 0, 1, 1];
 julia> reg_coxph(times,is_censored, is_censored)
 times = [6, 7, 10, 15, 19, 25]
 is_censored = [0, 0, 1, 0, 1, 1]
